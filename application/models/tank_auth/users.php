@@ -14,6 +14,7 @@ class Users extends CI_Model
 {
 	private $table_name			= 'users';			// user accounts
 	private $profile_table_name	= 'user_profiles';	// user profiles
+	private $calender_table_name	= 'calender_view'; //tutor calender settings
 
 	function __construct()
 	{
@@ -446,9 +447,29 @@ class Users extends CI_Model
 		$this->db->delete($this->profile_table_name);
 	}
 
+
+	function get_setting($id)
+	{
+		$this->db->where('tutor_id', $id);
+		$query = $this->db->get($this->calender_table_name);
+		//if ($query->num_rows() > 0) 
+			return $query->first_row();
+		//return NULL;
+	}
+
+
+	function set_setting($id,$times,$day)
+	{
+		
+		$this->db->set($day, $times);
+		$this->db->where('tutor_id', $id);
+		
+		$this->db->update($this->calender_table_name);
+
+	}
 	
 
-	function update_profile($user_id)
+	function update_profile($user_id,$filename, $thumb)
 	{
 		$this->db->set('firstname', $this->input->post('firstname'));
 		$this->db->set('lastname', $this->input->post('lastname'));
@@ -475,6 +496,9 @@ class Users extends CI_Model
 		
 		$this->db->set('Science', $this->input->post('Science'));
 		$this->db->set('profile_updated', 1);
+
+		$this->db->set('photo', $filename);
+		$this->db->set('thumb', $thumb);
 
 		$this->db->where('user_id', $user_id);
 		$this->db->update($this->profile_table_name);
@@ -553,82 +577,6 @@ class Users extends CI_Model
 
 		$this->db->where('user_type',$this->input->post('tutor'));
 
-
-		// if ( $this->input->post('firstname') != "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') == "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') == "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') == "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') == "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
-		// else if ( $this->input->post('firstname') != "" && $this->input->post('lastname') != "" && $this->input->post('hourly_rate') != "" && $this->input->post('gender') != "" )
-		// {
-		// 	$where = "Lower(firstname) ='" . strtolower( $this->input->post('firstname') ) . "' AND Lower(lastname) ='" . strtolower( $this->input->post('lastname') ) . "' AND Lower(hourly_rate) ='" . strtolower( $this->input->post('hourly_rate') ) . "' AND Lower(gender) ='" . strtolower( $this->input->post('gender') ) . "' AND user_type ='tutor'";
-	 //     	$this->db->where( $where );
-		// }
 
 		$this->db->distinct();
 

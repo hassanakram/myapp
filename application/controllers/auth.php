@@ -30,6 +30,182 @@ class Auth extends CI_Controller
 		}
 	}
 
+	function calender_setting()
+	{
+		if ($this->tank_auth->get_user_id())
+		{
+			$data['setting']='unchecked';
+			$data['message']="nothing";
+
+			$this->load->view('header', $data);
+			$this->load->view('auth/calender_setting', $data);
+		}
+		else
+		{
+			redirect('/auth/login/');
+		}
+	}
+
+	function timing_calender($id)
+	{
+		if (!$this->tank_auth->is_logged_in()) 
+		{								// not logged in or not activated
+			redirect('/auth/login/');
+		}
+		else
+		{
+			$data['nothing']='nothing';
+			$row= $this->users->get_setting($id);
+
+
+			$data['sunday']=$row->sunday;
+			$data['monday']=$row->monday;
+			$data['tuesday']=$row->tuesday;
+			$data['wednesday']=$row->wednesday;
+			$data['thursday']=$row->thursday;
+			$data['friday']=$row->friday;
+			$data['saturday']=$row->saturday;
+
+
+
+			$this->load->view('header', $data);
+			$this->load->view('auth/calender', $data);
+		}
+	}
+
+	function get_setting()
+	{
+		if ($this->tank_auth->is_logged_in())
+		{
+			$row= $this->users->get_setting($this->tank_auth->get_user_id());
+
+			$times="";
+			if($this->input->post('day')=='monday')
+			{
+				$times=$row->monday;	
+			}
+			else if($this->input->post('day')=='tuesday')
+			{
+				$times=$row->tuesday;	
+			} 
+			else if($this->input->post('day')=='wednesday')
+			{
+				$times=$row->wednesday;	
+			}
+			else if($this->input->post('day')=='thursday')
+			{
+				$times=$row->thursday;	
+			}
+			else if($this->input->post('day')=='friday')
+			{
+				$times=$row->friday;	
+			}
+			else if($this->input->post('day')=='saturday')
+			{
+				$times=$row->saturday;	
+			}
+			else if($this->input->post('day')=='sunday')
+			{
+				$times=$row->sunday;
+			}
+
+			$findme   = $this->input->post('time');
+
+			$pos = strpos($times, $findme);
+
+
+			if(isset ($_POST['set_setting']))
+			{
+				$day=$this->input->post('day');
+				$time=$this->input->post('time');
+
+				$checked=$this->input->post('onoffswitch');
+
+				if((int) $checked == 1)
+				{
+
+					
+					// Note our use of ===.  Simply == would not work as expected
+					// because the position of 'a' was the 0th (first) character.
+					if ($pos === false) 
+					{
+						$times=$times."".$time;
+						
+						$this->users->set_setting($this->tank_auth->get_user_id(),$times,$day);
+					} 
+
+				}
+				else
+				{
+					
+					if ( !($pos === false) )
+					{
+						$times = str_replace($time,"",$times);
+						
+						$this->users->set_setting($this->tank_auth->get_user_id(),$times,$day);
+					} 
+				}
+			}
+
+
+			$row= $this->users->get_setting($this->tank_auth->get_user_id());
+
+			$times="";
+			if($this->input->post('day')=='monday')
+			{
+				$times=$row->monday;	
+			}
+			else if($this->input->post('day')=='tuesday')
+			{
+				$times=$row->tuesday;	
+			} 
+			else if($this->input->post('day')=='wednesday')
+			{
+				$times=$row->wednesday;	
+			}
+			else if($this->input->post('day')=='thursday')
+			{
+				$times=$row->thursday;	
+			}
+			else if($this->input->post('day')=='friday')
+			{
+				$times=$row->friday;	
+			}
+			else if($this->input->post('day')=='saturday')
+			{
+				$times=$row->saturday;	
+			}
+			else if($this->input->post('day')=='sunday')
+			{
+				$times=$row->sunday;
+			}
+
+			$findme   = $this->input->post('time');
+
+			$pos = strpos($times, $findme);
+
+			// Note our use of ===.  Simply == would not work as expected
+			// because the position of 'a' was the 0th (first) character.
+			if ($pos === false) 
+			{
+				$data['setting']='unchecked';
+			   
+			} 
+			else 
+			{
+				$data['setting']='checked';
+			   
+			}
+
+			$this->load->view('header', $data);
+			$this->load->view('auth/calender_setting', $data);
+		}
+		else
+		{
+			redirect('/auth/login/');
+		}
+	}
+
 
 
 	function profiles($id)
@@ -275,6 +451,8 @@ class Auth extends CI_Controller
 				'student_name' => $row->student_name,
 				'hourly_rate' => $row->hourly_rate,
 				'paypal_id' => $row->paypal_id,
+				'thumb' => $row->thumb,
+				'photo' => $row->photo,
 				'success' => FALSE
 			   );
 
@@ -292,8 +470,78 @@ class Auth extends CI_Controller
 	function update_profile()
 	{
 		if ($this->tank_auth->is_logged_in()) 
-		{									// logged in
+		{
+
+			/* Upload Settings */
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '4024';
+			//$config['max_width']  = '4024';
+			//$config['width'] = '128';
+			//$config['max_height']  = '768';
+			/* Encrypting helps prevent the file name from being discerned once its saved */
+			$config['encrypt_name'] = 'TRUE';
+		 
+			/* Load the CodeIgniter upload library, feed it the config from above */
+			$this->load->library('upload', $config);
+
+
+				/* Checks if the do_upload function has been successfully executed ...
+				... and if not, shows the upload form and any errors (if they exist) */
+			if($this->upload->do_upload())
+			{
+				
+				//echo "Yes I am in";
+			}
+			else
+			{
+				//echo "No I am not in";
+			}
+
+			$id = $this->tank_auth->get_user_id();
 			
+			$returnresults = $this->db->get_where('user_profiles', array('user_id' => $id));
+
+			$row = $returnresults->row();
+
+			/* Assign the upload's metadata (size, dimensions, destination, etc.) ...
+			... to an array with another nice, clean variable */
+			if($upload = (array) $this->upload->data())
+			{
+
+				$user_id = $this->tank_auth->get_user_id();
+
+
+				/* Uses two upload library features to assemble the file name (the name, and extension) */
+				$filename = $upload['raw_name'].$upload['file_ext'];
+			 
+				/* Same with the thumbnail we'll generate, but with the suffix '_thumb' */
+				$thumb = $upload['raw_name']."_thumb".$upload['file_ext'];
+
+
+				/* Set the rules for the upload */
+				$config['image_library'] = 'gd2';
+				$config['source_image']	= "./uploads/".$filename;
+				$config['create_thumb'] = TRUE;
+				$config['maintain_ratio'] = TRUE;
+				$config['width']	 = 80;
+				$config['height']	= 80;
+
+				/* Load "image manipulation library", see CodeIgniter user guide */
+				$this->load->library('image_lib', $config);
+
+				/* Resize the image! */
+				$this->image_lib->resize();
+			 
+				/* Assign upload_data to $data variable */
+				$data['upload_data'] = $this->upload->data();
+		 	}
+		 	else
+		 	{
+		 		$filename=$row->photo;
+		 		$thumb=$row->thumb;
+		 	}
+				
 			$this->form_validation->set_rules('firstname', 'firstname', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('lastname', 'lastname', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('gender', 'gender', 'trim|required|xss_clean');
@@ -306,7 +554,10 @@ class Auth extends CI_Controller
 			$this->form_validation->set_rules('postel_code', 'postel_code', 'trim|required|xss_clean');				
 			$this->form_validation->set_rules('paypal_id', 'paypal_id', 'trim|required|xss_clean');				
 			$this->load->model('users');
-			$this->users->update_profile($this->tank_auth->get_user_id());
+
+
+
+			$this->users->update_profile($this->tank_auth->get_user_id(),$filename, $thumb);
 			
 			$id = $this->tank_auth->get_user_id();
 			$returnresults = $this->db->get_where('user_profiles', array('user_id' => $id));
@@ -339,6 +590,8 @@ class Auth extends CI_Controller
 				'student_name' => $row->student_name,
 				'hourly_rate' => $row->hourly_rate,
 				'paypal_id' => $row->paypal_id,
+				'photo'=> $filename,
+				'thumb'=> $thumb,
 				'success' => FALSE
 			   );
 
@@ -386,6 +639,9 @@ class Auth extends CI_Controller
 			redirect('/auth/login/');
 		}
 	}
+
+
+	
 
 	function register()
 	{
@@ -785,6 +1041,8 @@ class Auth extends CI_Controller
 		echo "string";
 		redirect('/auth/');
 	}
+
+	
 
 	/**
 	 * Send email message of given type (activate, forgot_password, etc.)

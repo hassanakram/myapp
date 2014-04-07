@@ -15,6 +15,8 @@
     
         <!-- favicon -->
             <link rel="shortcut icon" href="<?php echo site_url('../favicon.ico'); ?>" />
+
+        <link rel="stylesheet" href="<?php echo site_url('../lib/chosen/chosen.css'); ?>" />
     
         <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
     
@@ -158,7 +160,7 @@ $end_time = array(
 ?>
 
 <!-- <form action="dashboard.html" method="post" id="reg_form" > -->
-	<?php echo form_open('auth/update_profile',"id='login_form'"); ?>
+	<?php echo form_open_multipart('auth/update_profile',"id='login_form'"); ?>
 				<div class="top_b">Edit Your Profile</div>
 				<?php 
 					if($success == TRUE) {
@@ -172,6 +174,33 @@ $end_time = array(
 				?>
 				
 				<div class="cnt_b">
+					<div class="form-group">
+						<label for="fileinput" class="control-label col-sm-2">User avatar</label>
+						<div class="col-sm-8">
+							<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
+								<?php
+									$path=site_url('../uploads').'/'.$thumb;
+
+									if(!is_array(getimagesize($path)))
+									{
+										$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
+									}
+								?>
+
+									<div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="<?php echo $path ?>"></div>
+
+								
+
+									<!-- <div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="http://www.placehold.it/80x80/EFEFEF/AAAAAA"></div> -->
+
+								
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 80px; height: 80px; line-height: 80px;"></div>
+								<span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" name="userfile" size="20"></span>
+								<a href="#" class="btn btn-link fileupload-exists" data-dismiss="fileupload">Remove</a>
+							</div>
+						</div>
+					</div>
+
 					<div class="form-group">
 						<div class="input-group">
 							
@@ -189,7 +218,6 @@ $end_time = array(
 							<label style="color: red;"><?php echo form_error($lastname['name']); ?><?php echo isset($errors[$lastname['name']])?$errors[$lastname['name']]:''; ?></label>
 						</div>
 					</div>
-					
 
 					
 				<?php if( ! $this->tank_auth->isTutor()): ?>
@@ -249,8 +277,8 @@ $end_time = array(
 
 					
 
-					<div class="form-group">
-						<div class="input-group">
+					<div class="form-group" >
+						<div class="input-group" >
 							<?php echo form_input($specialties); ?>
 							<label style="color: red;"><?php echo form_error($specialties['name']); ?><?php echo isset($errors[$specialties['name']])?$errors[$specialties['name']]:''; ?></label>
 						</div>
@@ -272,6 +300,14 @@ $end_time = array(
 						</div>
 					</div>
 
+
+
+					<div class="form-group">
+						<div class="input-group">
+							<?php echo anchor('/auth/calender_setting', 'set timing slots',"class='btn btn btn-default btn-sm pull-left' "); ?>
+						</div>
+					</div>
+					</br></br>
 				<?php endif; ?>
 
 
@@ -289,6 +325,9 @@ $end_time = array(
 						</div>
 					</div>
 
+					
+
+
 					<div class="form-group">
 						<div class="input-group">
 							<?php echo form_input($phone); ?>
@@ -299,61 +338,6 @@ $end_time = array(
 					
 
 					
-
-					<div class="form-group">
-						<div class="input-group">
-							Available Days & Time
-						</div>
-						</br>
-						<div class="input-group">
-							
-							<?php
-
-										$options = array(
-										                  'Monday'  => 'Monday',
-										                  'Tuesday'    => 'Tuesday',
-										                  'Wednesday'    => 'Wednesday',
-										                  'Thursday'    => 'Thursday',
-										                  'Friday'    => 'Friday',
-										                  'Saturday'    => 'Saturday',
-										                  'Sunday'    => 'Sunday',
-										                );
-
-										echo form_dropdown('free_from', $options);
-							?>
-
-							 to 
-							
-							<?php
-
-										$options = array(
-										                  'Sunday'    => 'Sunday',
-												  'Monday'  => 'Monday',
-										                  'Tuesday'    => 'Tuesday',
-										                  'Wednesday'    => 'Wednesday',
-										                  'Thursday'    => 'Thursday',
-										                  'Friday'    => 'Friday',
-										                  'Saturday'    => 'Saturday',
-										                  
-										                );
-
-										echo form_dropdown('free_till', $options);
-							?>
-
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($start_time); ?>
-							
-							to
-
-							<?php echo form_input($end_time); ?>
-							
-						</div>
-
-					</div>
 
 
 
@@ -369,6 +353,57 @@ $end_time = array(
         <script src="<?php echo site_url('../js/jquery.actual.min.js'); ?>"></script>
         <script src="<?php echo site_url('../lib/validation/jquery.validate.js'); ?>"></script>
 		<script src="<?php echo site_url('../bootstrap/js/bootstrap.min.js'); ?>"></script>
+		<script src="<?php echo site_url('../js/gebo_user_profile.js'); ?>"></script>
+
+
+    <script src="<?php echo site_url('../js/jquery-migrate.min.js'); ?>"></script>
+    <script src="<?php echo site_url('../lib/jquery-ui/jquery-ui-1.10.0.custom.min.js'); ?>"></script>
+    <!-- touch events for jquery ui-->
+	<script src="<?php echo site_url('../js/forms/jquery.ui.touch-punch.min.js'); ?>"></script>
+    <!-- easing plugin -->
+	<script src="<?php echo site_url('../js/jquery.easing.1.3.min.js'); ?>"></script>
+    <!-- smart resize event -->
+	<script src="<?php echo site_url('../js/jquery.debouncedresize.min.js'); ?>"></script>
+    <!-- js cookie plugin -->
+	<script src="<?php echo site_url('../js/jquery_cookie_min.js'); ?>"></script>
+    
+    <!-- bootstrap plugins -->
+	<script src="<?php echo site_url('../js/bootstrap.plugins.min.js'); ?>"></script>
+	<!-- typeahead -->
+	<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
+    <!-- code prettifier -->
+	<script src="<?php echo site_url('../lib/google-code-prettify/prettify.min.js'); ?>"></script>
+    <!-- sticky messages -->
+	<script src="<?php echo site_url('../lib/sticky/sticky.min.js'); ?>"></script>
+    <!-- tooltips -->
+	<script src="<?php echo site_url('../lib/qtip2/jquery.qtip.min.js'); ?>"></script>
+    <!-- lightbox -->
+	<script src="<?php echo site_url('../lib/colorbox/jquery.colorbox.min.js'); ?>"></script>
+    <!-- jBreadcrumbs -->
+	<script src="<?php echo site_url('../lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js'); ?>"></script>
+	
+	<!-- custom scrollbar -->
+	<script src="<?php echo site_url('../lib/slimScroll/jquery.slimscroll.js'); ?>"></script>
+	<!-- fix for ios orientation change -->
+	<script src="<?php echo site_url('../js/ios-orientationchange-fix.js'); ?>"></script>
+	<!-- to top -->
+	<script src="<?php echo site_url('../lib/UItoTop/jquery.ui.totop.min.js'); ?>"></script>
+	<!-- mobile nav -->
+	<script src="<?php echo site_url('../js/selectNav.js'); ?>"></script>
+
+	<!-- common functions -->
+	<script src="<?php echo site_url('../js/gebo_common.js'); ?>"></script>
+
+	<!-- common functions -->
+	<script src="<?php echo site_url('../lib/chosen/chosen.jquery.min.js'); ?>"></script>
+
+	
+
+	<!-- autosize -->
+	<script src="<?php echo site_url('../lib/autosize/jquery.autosize.min.js'); ?>"></script>	
+
+
+
         <script>
             $(document).ready(function(){
 

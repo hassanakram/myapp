@@ -141,12 +141,11 @@
 												</div>
 											</li>
 
+
+
 											<li>
-												<span class="item-key">Available Time</span>
-												<div class="vcard-item">
-													<?php echo $free_from ?> to <?php echo $free_till ?> </br>
-													<?php echo $start_time ?> to <?php echo $end_time ?> 
-												</div>
+												
+												<?php echo anchor('/auth/timing_calender/'.$id, 'See Available Time slots',"class='btn btn btn-primary btn-sm pull-left'"); ?>
 											</li>
 
 											<li>
@@ -155,6 +154,8 @@
 												<div class="vcard-item"><?php echo $biography; ?></div>
 												
 											</li>
+											 
+
 											 
 
 											 <li class="v-heading">

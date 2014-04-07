@@ -66,8 +66,17 @@
 								<li class="dropdown">
 									<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Bookings <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><?php echo anchor('/bookings/index/', 'My bookings'); ?></li>
+										<?php if ($this->tank_auth->isTutor()): ?>
+
+											<li><?php echo anchor('/bookings/index/', 'My bookings'); ?></li>
 										
+										<?php else: ?>
+
+											<li><?php echo anchor('/bookings/index/', 'Requested Bookings'); ?></li>
+											
+											<li><?php echo anchor('/bookings/Existing/', 'Existing Bookings'); ?></li>
+											<li><?php echo anchor('/bookings/past/', 'Past Bookings'); ?></li>
+										<?php endif; ?>
 									</ul>
 								</li>
 								

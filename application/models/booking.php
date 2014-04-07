@@ -60,7 +60,18 @@ class booking extends CI_Model
 			$this->db->where('id', $booking_id);
 			$this->db->update($this->table_name, array(
 				'review'		=> $this->input->post('review'),
+				'rating'		=> $this->input->post('rating'),
 				'feedback' => 1
+			));
+	}	
+
+
+	function dispute($booking_id)
+	{
+			$this->db->where('id', $booking_id);
+			$this->db->update($this->table_name, array(
+				'dispute'		=> $this->input->post('dispute'),
+				'is_disputed'		=> 1
 			));
 	}	
 
@@ -69,17 +80,16 @@ class booking extends CI_Model
 	{
 			$this->db->where('id', $booking_id);
 			
-			$this->db->update($this->table_name, array(
-				'status'		=> 1,'changed' => 0
-			));
+			$this->db->update($this->table_name, array('status'		=> 1,'changed' => 0 ));
 	}
+
 
 
 	function reject_booking($booking_id)
 	{
 			$this->db->where('id', $booking_id);
 			
-			$this->db->update($this->table_name, array(
+			$this->db->update($this->table_name, array (
 				'status'		=> 0,'changed' => 0
 			));
 	}
@@ -91,8 +101,36 @@ class booking extends CI_Model
 		
 		$this->db->where('user_id', $user_id);
 		$this->db->or_where('tutor_id', $user_id); 
+
 		$query = $this->db->get('bookings');
 		return $query->result();
+	}
+
+
+	function past($user_id)
+	{
+		//$query=$this->db->query("SELECT * FROM 'bookings' WHERE  'user_id'='$user_id'   ");
+		
+		$this->db->where('user_id', $user_id);
+		$date=date("Y-m-d");
+		$this->db->where('from_date <',$date);
+		$this->db->order_by("from_date", "desc"); 
+		$query = $this->db->get('bookings');
+		return $query->result();
+	}
+
+
+	function existing($user_id)
+	{
+		//$query=$this->db->query("SELECT * FROM 'bookings' WHERE  'user_id'='$user_id' AND 'from_date' >= '2014-04-06' ");
+		
+		$this->db->where('user_id', $user_id);
+		$date=date("Y-m-d");
+		$this->db->where('from_date >=',$date); 
+		$this->db->order_by("from_date", "desc"); 
+		$query = $this->db->get('bookings');
+		return $query->result();
+		
 	}
 
 

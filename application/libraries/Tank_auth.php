@@ -182,11 +182,31 @@ class Tank_auth
 		
 	}
 
+	function get_contact($user_id)
+	{
+		$row=$this->ci->users->get_type($user_id);
+		return $row->phone;
+	}
+
+	
+
+
+	
+
+
+	
 
 	function getUserEmail($user_id)
 	{
 		$row=$this->ci->users->get_email($user_id);
 		return $row->email;
+	}
+
+
+	function getThumb($user_id)
+	{
+		$row=$this->ci->users->get_type($user_id);
+		return $row->thumb;
 	}
 
 	/**

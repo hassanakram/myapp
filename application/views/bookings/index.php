@@ -82,7 +82,17 @@
 											if( ! $this->tank_auth->isTutor($user_id) ) //common USER
 											{
 												$name=$this->tank_auth->get_fullname($row->tutor_id);
-												echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left"> <img alt="" src="http://placehold.it/80x80/efefef"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a>';
+												
+												$path=$this->tank_auth->getThumb($row->tutor_id);	
+
+												$path=site_url('../uploads').'/'.$path;
+
+												if(!is_array(getimagesize($path)))
+												{
+													$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
+												}
+
+												echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a>';
 
 												if($row->status==NULL)
 												{
@@ -124,10 +134,7 @@
 													
 													echo form_close();
 
-													echo form_open("bookings/delete","style ='float: left; padding: 5px;' ");
-													echo ' <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Cancel Booking" class="btn btn-danger" />  ';
 													
-													echo form_close();
 												}
 
 												echo "</div>";
@@ -139,13 +146,24 @@
 											{
 											
 												$name=$this->tank_auth->get_fullname($row->user_id);
-												echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left"> <img alt="" src="http://placehold.it/80x80/efefef"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a> </h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
+
+												$path=$this->tank_auth->getThumb($row->user_id);	
+
+												$path=site_url('../uploads').'/'.$path;
+
+												if(!is_array(getimagesize($path)))
+												{
+													$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
+												}
+
+
+												echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a> </h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
 
 												$id = $row->id;
 												echo "<div 'style=' display:inline; ' '>";
 												
 												
-												if($row->status ==NULL || $row->changed==1 )
+												if($row->status == NULL || $row->changed ==1 )
 												{
 													echo form_open("bookings/accept","style ='float: left; padding: 5px;' ");
 													echo ' <input type="hidden" id="id" name="user_id" value="'.$row->user_id.'"> <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Accept Booking" class="btn btn-success" />  ';
@@ -211,19 +229,35 @@
 				<div class="sidebar_inner">
 					<div class="sidebar_filters">
 						
-						<h2>My Bookings</h2>
-						<div class="filter_items">
-							You can Edit a booking
-						</div>
-						<div class="filter_items">
-							You can cancel a Booking
-						</div>
-						<div class="filter_items">
-							You can accept a Booking
-						</div>
-						<div class="filter_items">
-							You can reject a Booking
-						</div>
+							<?php if ($this->tank_auth->isTutor()): ?>
+
+								<h2>My Bookings</h2>
+
+							<?php else: ?>
+
+								<h2>Requested Bookings</h2>
+							<?php endif; ?>
+
+							<?php if ($this->tank_auth->isTutor()): ?>
+								<div class="filter_items">
+									You can cancel a Booking
+								</div>
+								<div class="filter_items">
+									You can accept a Booking
+								</div>
+
+								<div class="filter_items">
+									You can reject a Booking
+								</div>
+								
+
+							<?php else: ?>
+
+								<div class="filter_items">
+									You can Edit a booking
+								</div>
+							<?php endif; ?>
+						
 
 						<div class="filter_items">
 							
