@@ -143,10 +143,7 @@
 
 
 
-											<li>
-												
-												<?php echo anchor('/auth/timing_calender/'.$id, 'See Available Time slots',"class='btn btn btn-primary btn-sm pull-left'"); ?>
-											</li>
+											
 
 											<li>
 												<span class="item-key">Biography</span>

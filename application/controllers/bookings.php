@@ -37,6 +37,27 @@ class bookings extends CI_Controller
 		}
 	}
 
+	
+
+	function upcoming()
+	{
+		if (!$this->tank_auth->is_logged_in())
+		{
+			redirect('/auth/login/');
+		} 
+		else 
+		{
+			$data['user_id']	= $this->tank_auth->get_user_id();
+
+			$data['username']	= $this->tank_auth->get_username();
+
+			$data['result']=$this->booking->bookings($this->tank_auth->get_user_id());
+
+			$this->load->view('header', $data);
+			$this->load->view('bookings/upcoming', $data);
+		}
+	}
+
 	function make_dispute()
 	{
 		if(!$this->tank_auth->is_logged_in())
@@ -89,7 +110,7 @@ class bookings extends CI_Controller
 			$data['desc']=$row->dispute;		
 
 			
-			$data['email']='hassan.akram3282@gmail.com';
+			$data['email']='admin@prometheusnetwork.com.au';
 
 			$data['site_name'] = $this->config->item('website_name', 'tank_auth');
 
@@ -106,8 +127,6 @@ class bookings extends CI_Controller
 		if (!$this->tank_auth->is_logged_in())
 		{
 			redirect('/auth/login/');
-
-
 		} 
 		else 
 		{
@@ -126,7 +145,7 @@ class bookings extends CI_Controller
 
 	function existing()
 	{
-		if (!$this->tank_auth->is_logged_in())
+		if(!$this->tank_auth->is_logged_in())
 		{
 			redirect('/auth/login/');
 		} 

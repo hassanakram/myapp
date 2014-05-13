@@ -46,32 +46,120 @@ class Auth extends CI_Controller
 		}
 	}
 
-	function timing_calender($id)
+
+
+	function timing_calender($id=NULL)
 	{
-		if (!$this->tank_auth->is_logged_in()) 
-		{								// not logged in or not activated
-			redirect('/auth/login/');
+		if($id===NULL)
+		{
+			show_404();
 		}
 		else
 		{
-			$data['nothing']='nothing';
-			$row= $this->users->get_setting($id);
+			if (!$this->tank_auth->is_logged_in()) 
+			{								// not logged in or not activated
+				redirect('/auth/login/');
+			}
+			else
+			{
+				
+					$data['nothing']='nothing';
+					$row= $this->users->get_setting($id);
 
 
-			$data['sunday']=$row->sunday;
-			$data['monday']=$row->monday;
-			$data['tuesday']=$row->tuesday;
-			$data['wednesday']=$row->wednesday;
-			$data['thursday']=$row->thursday;
-			$data['friday']=$row->friday;
-			$data['saturday']=$row->saturday;
+					$data['sunday']=$row->sunday;
+					$data['monday']=$row->monday;
+					$data['tuesday']=$row->tuesday;
+					$data['wednesday']=$row->wednesday;
+					$data['thursday']=$row->thursday;
+					$data['friday']=$row->friday;
+					$data['saturday']=$row->saturday;
 
-
-
-			$this->load->view('header', $data);
-			$this->load->view('auth/calender', $data);
+					$this->load->view('header', $data);
+					$this->load->view('auth/calender', $data);
+			}
 		}
 	}
+
+	function setCalendar()
+    {
+    	if (!empty($_POST)&& $this->tank_auth->isTutor())
+    	{
+	        $post = array();
+
+	        $mond="";
+	        $tuesd="";
+	        $wednes="";
+			$thurs="";
+			$frid="";
+			$satur="";
+			$sund="";
+			
+			foreach ( array_keys($_POST) as $key )
+	        {
+	        	
+	            $post[$key] = $this->input->post($key);
+
+	            $pieces = explode("_", $key);
+
+	            if(sizeof($pieces) ===4)
+	            {
+	            	$time=$pieces[1].' '.$pieces[2].'.'.$pieces[3];
+	            }
+	            
+	            if($pieces[0]==='monday')
+	            {
+	            	$mond=$mond.''.$time;
+	            }
+	            else if($pieces[0]==='tuesday')
+	            {
+	            	$tuesd=$tuesd.''.$time;
+	            }
+	            else if($pieces[0]==='wednesday')
+	            {
+	            	$wednes=$wednes.''.$time;
+	            }
+	            else if($pieces[0]==='thursday')
+	            {
+	            	$thurs=$thurs.''.$time;
+	            }
+	            else if($pieces[0]==='friday')
+	            {
+	            	$frid=$frid.''.$time;
+	            }
+	            else if($pieces[0]==='saturday')
+	            {
+	            	$satur=$satur.''.$time;
+	            }
+	            else if($pieces[0]==='sunday')
+	            {
+	            	$sund=$sund.''.$time;
+	            }
+	        }
+
+
+	/*        echo 'monday:'.$mond.'</br>';
+	        echo 'tuesday:'.$tuesd.'</br>';
+	        echo 'wednesday:'.$wednes.'</br>';
+	        echo 'thursday:'.$thurs.'</br>';
+	        echo 'friday:'.$frid.'</br>';
+	        echo 'saturday:'.$satur.'</br>';
+	        echo 'sunday:'.$sund.'</br>';
+	*/        
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$mond,'monday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$tuesd,'tuesday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$wednes,'wednesday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$thurs,'thursday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$frid,'friday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$satur,'saturday');
+	        $this->users->set_setting($this->tank_auth->get_user_id(),$sund,'sunday');
+			
+	        //$this->load->view('auth/temp');
+		}
+		redirect('/auth/timing_calender/'.$this->tank_auth->get_user_id());
+
+    }
+
 
 	function get_setting()
 	{
@@ -109,6 +197,7 @@ class Auth extends CI_Controller
 				$times=$row->sunday;
 			}
 
+
 			$findme   = $this->input->post('time');
 
 			$pos = strpos($times, $findme);
@@ -118,22 +207,17 @@ class Auth extends CI_Controller
 			{
 				$day=$this->input->post('day');
 				$time=$this->input->post('time');
-
 				$checked=$this->input->post('onoffswitch');
 
 				if((int) $checked == 1)
 				{
-
-					
 					// Note our use of ===.  Simply == would not work as expected
 					// because the position of 'a' was the 0th (first) character.
 					if ($pos === false) 
 					{
 						$times=$times."".$time;
-						
 						$this->users->set_setting($this->tank_auth->get_user_id(),$times,$day);
 					} 
-
 				}
 				else
 				{
@@ -259,8 +343,6 @@ class Auth extends CI_Controller
 			} 
 			else 
 			{
-				
-				
 				redirect('/auth/login/');
 			}	
 		}
@@ -372,7 +454,8 @@ class Auth extends CI_Controller
 			$data['show_captcha'] = FALSE;
 			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
 				$data['show_captcha'] = TRUE;
-				if ($data['use_recaptcha']) {
+				if ($data['use_recaptcha']) 
+				{
 					$data['recaptcha_html'] = $this->_create_recaptcha();
 				} else {
 					$data['captcha_html'] = $this->_create_captcha();
@@ -580,7 +663,6 @@ class Auth extends CI_Controller
 				'science' => $row->Science,
 				'chem' => $row->Chem,
 				'other' => $row->specialities_other,
-
 				'free_from' => $row->free_from,
 				'free_till' => $row->free_till,
 				'start_time' => $row->start_time,

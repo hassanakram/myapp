@@ -58,7 +58,6 @@
 										                  '05:00 P.M'=> '05:00 P.M' ,
 										                  '06:00 P.M'=> '06:00 P.M' ,
 										                   '07:00 P.M'=> '07:00 P.M' ,
-										                  
 										                );
 
 										echo form_dropdown('time', $options);
@@ -95,7 +94,6 @@
 							        <div class="onoffswitch-inner"></div>
 							        <div class="onoffswitch-switch"></div>
 							    </label>
-							
 							</div>
 						</div>
 					</div>
@@ -113,16 +111,10 @@
 								<?php echo anchor('/auth/timing_calender/'.$this->tank_auth->get_user_id(), 'See Time Settings in table view',"class='btn btn btn-primary btn-sm pull-left' style='margin-top: 5;' "); ?>
 						</div>
 					</div>
-
-					
-					
 				</div>
 				<div 
 				class="btm_b clearfix">
 					<!-- <button class="btn btn-default btn-sm pull-right" type="submit">Sign In</button> -->
-
-					
-
 				</div>  
 			</form>
 			

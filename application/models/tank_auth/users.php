@@ -432,7 +432,16 @@ class Users extends CI_Model
 		$this->db->set('lastname', $this->input->post('lastname'));
 		$this->db->set('gender', $this->input->post('gender'));
 		$this->db->set('user_type', $this->input->post('user_type'));
-		return $this->db->insert($this->profile_table_name);
+		$result=$this->db->insert($this->profile_table_name);
+		
+
+		if($this->input->post('user_type')=='tutor')
+		{
+			$this->db->set('tutor_id', $user_id);
+			$this->db->insert($this->calender_table_name);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -460,14 +469,11 @@ class Users extends CI_Model
 
 	function set_setting($id,$times,$day)
 	{
-		
 		$this->db->set($day, $times);
 		$this->db->where('tutor_id', $id);
-		
 		$this->db->update($this->calender_table_name);
-
 	}
-	
+
 
 	function update_profile($user_id,$filename, $thumb)
 	{
@@ -503,6 +509,7 @@ class Users extends CI_Model
 		$this->db->where('user_id', $user_id);
 		$this->db->update($this->profile_table_name);
 	}
+
 
 
 	function search_users()

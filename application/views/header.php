@@ -58,28 +58,37 @@
 									<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Home <b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><?php echo anchor('', 'Home Page'); ?></li>
-										
-
 									</ul>
 								</li>
+								<?php if ($this->tank_auth->is_logged_in()): ?>
+									<li class="dropdown">
+										<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Bookings <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<?php if ($this->tank_auth->isTutor()): ?>
 
-								<li class="dropdown">
-									<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Bookings <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-										<?php if ($this->tank_auth->isTutor()): ?>
+												<li><?php echo anchor('/bookings/index/', 'My bookings'); ?></li>
+											<?php else: ?>
 
-											<li><?php echo anchor('/bookings/index/', 'My bookings'); ?></li>
+												<li><?php echo anchor('/bookings/index/', 'Requested Bookings'); ?></li>
+												
+												<li><?php echo anchor('/bookings/Existing/', 'Existing Bookings'); ?></li>
+												<li><?php echo anchor('/bookings/past/', 'Past Bookings'); ?></li>
+											<?php endif; ?>
+										</ul>
 										
-										<?php else: ?>
-
-											<li><?php echo anchor('/bookings/index/', 'Requested Bookings'); ?></li>
-											
-											<li><?php echo anchor('/bookings/Existing/', 'Existing Bookings'); ?></li>
-											<li><?php echo anchor('/bookings/past/', 'Past Bookings'); ?></li>
-										<?php endif; ?>
-									</ul>
-								</li>
-								
+									</li>
+								<?php endif; ?>
+								<?php if ($this->tank_auth->is_logged_in()): ?>
+									<?php if ($this->tank_auth->isTutor()): ?>
+									<li class="dropdown">
+										<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span>Calendar<b class="caret"></b></a>
+										<ul class="dropdown-menu">
+												<li><?php echo anchor('/bookings/upcoming', 'Upcomming bookings'); ?></li>
+												<li><?php echo anchor('auth/timing_calender/'.$this->tank_auth->get_user_id(), 'Availabilities'); ?></li>
+										</ul>
+									</li>
+									<?php endif; ?>
+								<?php endif; ?>
 							</ul>
 							<ul class="nav navbar-nav user_menu pull-right">
 								<li class="hidden-phone hidden-tablet">

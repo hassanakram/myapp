@@ -88,7 +88,6 @@ class booking extends CI_Model
 	function reject_booking($booking_id)
 	{
 			$this->db->where('id', $booking_id);
-			
 			$this->db->update($this->table_name, array (
 				'status'		=> 0,'changed' => 0
 			));

@@ -75,72 +75,13 @@
 										
 										foreach($result as $row)
 										{
-											if( ! $this->tank_auth->isTutor($user_id) ) //common USER
+											if( $this->tank_auth->isTutor($user_id) && $row->status == 1 ) //Tutor
 											{
-												$name=$this->tank_auth->get_fullname($row->tutor_id);
-												$path=$this->tank_auth->getThumb($row->tutor_id);	
+												$combinedDT = date('Y-m-d H:i:s',strtotime("$row->from_date $row->from_time"));												
 
-												$path=site_url('../uploads').'/'.$path;
+												$interval =  date_create($combinedDT)->diff(date_create('now'));
 
-												if(!is_array(getimagesize($path)))
-												{
-													$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
-												}
-
-												echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a>';
-
-												if($row->status==NULL)
-												{
-													echo '<span class="label label-info">Pending</span>';
-												}
-												else if($row->status==0)
-												{
-													echo '<span class="label label-info">Rejected</span>';	
-												} 
-												else
-												{
-													echo '<span class="label label-info"> Accepted  </span>';
-												}
-
-
-												echo '</h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
-
-												$id = $row->id;
-
-												echo "<div 'style=' display:inline; ' '>";
-
-												
-
-
-												if($row->status==1)
-												{
-													if($row->feedback==0)
-													{
-														echo form_open("bookings/feedbackview","style ='float: left; padding: 5px;' ");
-														echo ' <input type="hidden" id="id" name="user_id" value="'.$row->tutor_id.'">  <input type="hidden" id="id" name="booking_id" value="'.$id.'">  <input type="submit" value="Give feedback" class="btn btn-gebo" />  ';
-														echo form_close();
-													}
-												}
-												else
-												{
-													echo form_open("bookings/edit","style ='float: left; padding: 5px;' ");
-												
-													echo ' <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Edit Booking" class="btn btn-primary" />  ';
-													
-													echo form_close();
-
-													
-												}
-
-												echo "</div>";
-												echo '</div></div>';
-
-												$i++;
-											}
-											else   // Tutor
-											{
-											
-												if($row->status == NULL || $row->changed ==1 )
+												if($interval->days<29)
 												{
 													$name=$this->tank_auth->get_fullname($row->user_id);
 
@@ -160,23 +101,9 @@
 													echo "<div 'style=' display:inline; ' '>";
 													
 													
-													
-														echo form_open("bookings/accept","style ='float: left; padding: 5px;' ");
-														echo ' <input type="hidden" id="id" name="user_id" value="'.$row->user_id.'"> <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Accept Booking" class="btn btn-success" />  ';
-														echo form_close();
-
-														echo form_open("bookings/reject","style ='float: left; padding: 5px;' ");
-														echo ' <input type="hidden" id="id" name="user_id" value="'.$row->user_id.'"> <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Reject Booking" class="btn btn-danger" />  ';
-														echo form_close();
-													// }
-													// else
-													// {
-													// 	echo form_open("bookings/delete","style ='float: left; padding: 5px;'");
-													// 	echo ' <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Cancel Booking" class="btn btn-primary" />  ';
-													// 	echo form_close();
-													// }
-													
-													
+													echo form_open("bookings/delete","style ='float: left; padding: 5px;'");
+													echo ' <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Cancel Booking" class="btn btn-primary" />  ';
+													echo form_close();
 
 													echo '</div>';
 													echo '</div></div>';
@@ -234,22 +161,23 @@
 
 							<?php if ($this->tank_auth->isTutor()): ?>
 								<!-- <div class="filter_items">
-									<?php echo anchor('bookings/upcoming', 'Upcoming sessions'); ?>
+									<?php echo anchor('', 'Upcoming sessions'); ?>
 								</div>
 								<div class="filter_items">
-									<?php echo anchor('auth/timing_calender/'.$this->tank_auth->get_user_id(), 'Availabilities'); ?>
+									<?php echo anchor('bookings/upcoming', 'Availabilities'); ?>
 								</div> -->
 							<?php else: ?>
 								<div class="filter_items">
 									You can Edit a booking
 								</div>
+
 								<div class="filter_items">
 									<?php echo anchor('', 'Back To search Page'); ?>
 								</div>
 							<?php endif; ?>
 						
 
-						  
+						
 						
 					</div>
 				</div>

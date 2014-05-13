@@ -83,7 +83,7 @@ $paypal_id = array(
 $phone = array(
 	'name'	=> 'phone',
 	'id'	=> 'phone',
-	'placeholder' => "Phone #",
+	'placeholder' => "Phone number",
 	'value'	=> $phone,
 	'maxlength'	=> 25,
 	'size'	=> 25,
@@ -92,7 +92,7 @@ $phone = array(
 $postel_code = array(
 	'name'	=> 'postel_code',
 	'id'	=> 'postel_code',
-	'placeholder' => "Postal Code",
+	'placeholder' => "Postcode",
 	'value'	=> $postel_code,
 	'maxlength'	=> 25,
 	'size'	=> 25,
@@ -100,14 +100,8 @@ $postel_code = array(
 
 
 
-$specialties = array(
-	'name'	=> 'specialities_other',
-	'id'	=> 'specialties',
-	'placeholder' => "specialities (Other)",
-	'value'	=> $specialities_other,
-	'maxlength'	=> 25,
-	'size'	=> 25,
-);
+
+
 
 
 
@@ -277,18 +271,13 @@ $end_time = array(
 
 					
 
-					<div class="form-group" >
-						<div class="input-group" >
-							<?php echo form_input($specialties); ?>
-							<label style="color: red;"><?php echo form_error($specialties['name']); ?><?php echo isset($errors[$specialties['name']])?$errors[$specialties['name']]:''; ?></label>
-						</div>
-					</div>
+					
 
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon">$</span>
 							<?php echo form_input($hourly_rate); ?>
-							<span class="input-group-addon">.00</span>
+							
 							<label style="color: red;"><?php echo form_error($hourly_rate['name']); ?><?php echo isset($errors[$hourly_rate['name']])?$errors[$hourly_rate['name']]:''; ?></label>
 						</div>
 					</div>
@@ -300,14 +289,6 @@ $end_time = array(
 						</div>
 					</div>
 
-
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo anchor('/auth/calender_setting', 'set timing slots',"class='btn btn btn-default btn-sm pull-left' "); ?>
-						</div>
-					</div>
-					</br></br>
 				<?php endif; ?>
 
 
@@ -324,8 +305,6 @@ $end_time = array(
 							<label style="color: red;"><?php echo form_error($postel_code['name']); ?><?php echo isset($errors[$postel_code['name']])?$errors[$postel_code['name']]:''; ?></label>
 						</div>
 					</div>
-
-					
 
 
 					<div class="form-group">

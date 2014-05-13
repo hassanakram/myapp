@@ -176,7 +176,6 @@
 						    <?php endforeach;?>
 
 						    <input type="checkbox" id="other" name="other" value="other">&nbsp;Other(any)<br />
-
 						</div>
 
 						<div class="filter_items">
