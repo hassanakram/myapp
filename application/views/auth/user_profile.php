@@ -92,9 +92,10 @@
 
 											<li>
 												<span class="item-key">Rating</span>
-													<div class="vcard-item"><?php 
+													<div class="vcard-item">
+														<?php 
 
-														$percent= ($rating/5)*100; 
+															$percent= ($rating/5)*100; 
 
 														?>
 

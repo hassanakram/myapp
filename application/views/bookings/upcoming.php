@@ -56,7 +56,6 @@
 		<div id="maincontainer" class="clearfix">
 			<div id="contentwrapper">
                 <div class="main_content">
-                    				                    
 					<div class="row search_page">
 					    <div class="col-sm-12 col-md-12">
 					        <h3 class="heading"><small>Booking with</small></h3>
@@ -122,120 +121,77 @@
             </div>
 
 
-<?php
-			$first_name = array(
-				'name'	=> 'firstname',
-				'id'	=> 'firstname',
-				'placeholder'	=> 'First Name',
-				'width'=>'150px',
-				'style'=>'width:170px',
-			);
-			$last_name = array(
-				'name'	=> 'lastname',
-				'id'	=> 'lastname',
-				'placeholder'	=> 'Last Name',
-				'width'=>'150px',
-				'style'=>'width:170px',
-			);
+
+            <?php
+				$rootDir = "";
+				if(strpos($_SERVER['HTTP_HOST'],'localhost')===FALSE)
+				{
+				  //On Production
+				  $rootDir = $_SERVER['DOCUMENT_ROOT'].'/application/views';
+				}
+				else
+				{
+				  //On Dev server
+				  $rootDir = $_SERVER['DOCUMENT_ROOT'].'/myapp/application/views';
+				}
+			?>
+			<?php include($rootDir.'/sidebar.php');?>
+
+
+
+
+	    <script src="<?php echo site_url('../js/jquery.min.js'); ?>"></script>
+	    <script src="<?php echo site_url('../js/jquery-migrate.min.js'); ?>"></script>
+	    <script src="<?php echo site_url('../lib/jquery-ui/jquery-ui-1.10.0.custom.min.js'); ?>"></script>
+	    <!-- touch events for jquery ui-->
+		<script src="<?php echo site_url('../js/forms/jquery.ui.touch-punch.min.js'); ?>"></script>
+	    <!-- easing plugin -->
+		<script src="<?php echo site_url('../js/jquery.easing.1.3.min.js'); ?>"></script>
+	    <!-- smart resize event -->
+		<script src="<?php echo site_url('../js/jquery.debouncedresize.min.js'); ?>"></script>
+	    <!-- js cookie plugin -->
+		<script src="<?php echo site_url('../js/jquery_cookie_min.js'); ?>"></script>
+	    <!-- main bootstrap js -->
+		<script src="<?php echo site_url('../bootstrap/js/bootstrap.min.js'); ?>"></script>
+	    <!-- bootstrap plugins -->
+		<script src="<?php echo site_url('../js/bootstrap.plugins.min.js'); ?>"></script>
+		<!-- typeahead -->
+		<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
+	    <!-- code prettifier -->
+		<script src="<?php echo site_url('../lib/google-code-prettify/prettify.min.js'); ?>"></script>
+	    <!-- sticky messages -->
+		<script src="<?php echo site_url('../lib/sticky/sticky.min.js'); ?>"></script>
+	    <!-- tooltips -->
+		<script src="<?php echo site_url('../lib/qtip2/jquery.qtip.min.js'); ?>"></script>
+	    <!-- lightbox -->
+		<script src="<?php echo site_url('../lib/colorbox/jquery.colorbox.min.js'); ?>"></script>
+	    <!-- jBreadcrumbs -->
+		<script src="<?php echo site_url('../lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js'); ?>"></script>
+		<!-- hidden elements width/height -->
+		<script src="<?php echo site_url('../js/jquery.actual.min.js'); ?>"></script>
+		<!-- custom scrollbar -->
+		<script src="<?php echo site_url('../lib/slimScroll/jquery.slimscroll.js'); ?>"></script>
+		<!-- fix for ios orientation change -->
+		<script src="<?php echo site_url('../js/ios-orientationchange-fix.js'); ?>"></script>
+		<!-- to top -->
+		<script src="<?php echo site_url('../lib/UItoTop/jquery.ui.totop.min.js'); ?>"></script>
+		<!-- mobile nav -->
+		<script src="<?php echo site_url('../js/selectNav.js'); ?>"></script>
+
 			
-			$gender = array(
-				'name'	=> 'gender',
-				'id'	=> 'gender',
-				'placeholder'	=> 'Gender',
-				'style'=>'width:170px',
-			);
-		?>
 
+		<!-- Pop up for feed back -->
+		<script src="<?php echo site_url('../js/jquery.leanModal.min.js'); ?>"></script>	
 
-	
-		<div class="sidebar">
-			<div class="sidebar_inner_scroll">
-				<div class="sidebar_inner">
-					<div class="sidebar_filters">
-						
-							<?php if ($this->tank_auth->isTutor()): ?>
-								<!-- <h2>My Bookings</h2> -->
-							<?php else: ?>
-								<h2>Requested Bookings</h2>
-							<?php endif; ?>
+		<!-- common functions -->
+		<script src="<?php echo site_url('../js/gebo_common.js'); ?>"></script>
 
-							<?php if ($this->tank_auth->isTutor()): ?>
-								<!-- <div class="filter_items">
-									<?php echo anchor('', 'Upcoming sessions'); ?>
-								</div>
-								<div class="filter_items">
-									<?php echo anchor('bookings/upcoming', 'Availabilities'); ?>
-								</div> -->
-							<?php else: ?>
-								<div class="filter_items">
-									You can Edit a booking
-								</div>
-
-								<div class="filter_items">
-									<?php echo anchor('', 'Back To search Page'); ?>
-								</div>
-							<?php endif; ?>
-						
-
-						
-						
-					</div>
-				</div>
-			</div>
-		</div>
-    <script src="<?php echo site_url('../js/jquery.min.js'); ?>"></script>
-    <script src="<?php echo site_url('../js/jquery-migrate.min.js'); ?>"></script>
-    <script src="<?php echo site_url('../lib/jquery-ui/jquery-ui-1.10.0.custom.min.js'); ?>"></script>
-    <!-- touch events for jquery ui-->
-	<script src="<?php echo site_url('../js/forms/jquery.ui.touch-punch.min.js'); ?>"></script>
-    <!-- easing plugin -->
-	<script src="<?php echo site_url('../js/jquery.easing.1.3.min.js'); ?>"></script>
-    <!-- smart resize event -->
-	<script src="<?php echo site_url('../js/jquery.debouncedresize.min.js'); ?>"></script>
-    <!-- js cookie plugin -->
-	<script src="<?php echo site_url('../js/jquery_cookie_min.js'); ?>"></script>
-    <!-- main bootstrap js -->
-	<script src="<?php echo site_url('../bootstrap/js/bootstrap.min.js'); ?>"></script>
-    <!-- bootstrap plugins -->
-	<script src="<?php echo site_url('../js/bootstrap.plugins.min.js'); ?>"></script>
-	<!-- typeahead -->
-	<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
-    <!-- code prettifier -->
-	<script src="<?php echo site_url('../lib/google-code-prettify/prettify.min.js'); ?>"></script>
-    <!-- sticky messages -->
-	<script src="<?php echo site_url('../lib/sticky/sticky.min.js'); ?>"></script>
-    <!-- tooltips -->
-	<script src="<?php echo site_url('../lib/qtip2/jquery.qtip.min.js'); ?>"></script>
-    <!-- lightbox -->
-	<script src="<?php echo site_url('../lib/colorbox/jquery.colorbox.min.js'); ?>"></script>
-    <!-- jBreadcrumbs -->
-	<script src="<?php echo site_url('../lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js'); ?>"></script>
-	<!-- hidden elements width/height -->
-	<script src="<?php echo site_url('../js/jquery.actual.min.js'); ?>"></script>
-	<!-- custom scrollbar -->
-	<script src="<?php echo site_url('../lib/slimScroll/jquery.slimscroll.js'); ?>"></script>
-	<!-- fix for ios orientation change -->
-	<script src="<?php echo site_url('../js/ios-orientationchange-fix.js'); ?>"></script>
-	<!-- to top -->
-	<script src="<?php echo site_url('../lib/UItoTop/jquery.ui.totop.min.js'); ?>"></script>
-	<!-- mobile nav -->
-	<script src="<?php echo site_url('../js/selectNav.js'); ?>"></script>
-
-		
-
-	<!-- Pop up for feed back -->
-	<script src="<?php echo site_url('../js/jquery.leanModal.min.js'); ?>"></script>	
-
-	<!-- common functions -->
-	<script src="<?php echo site_url('../js/gebo_common.js'); ?>"></script>
-
-	<!-- search page functions -->
-    <script src="<?php echo site_url('../js/gebo_search.js'); ?>"></script>
+		<!-- search page functions -->
+	    <script src="<?php echo site_url('../js/gebo_search.js'); ?>"></script>
 
     
 	
 
-	  
-</div>
-					</body>
-				</html>
+
+	</body>
+</html>

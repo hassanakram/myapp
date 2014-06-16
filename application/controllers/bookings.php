@@ -31,6 +31,8 @@ class bookings extends CI_Controller
 			$data['username']	= $this->tank_auth->get_username();
 
 			$data['result']=$this->booking->bookings($this->tank_auth->get_user_id());
+			$data['upcoming']=$this->booking->upcoming($this->tank_auth->get_user_id());
+			$data['past']=$this->booking->past($this->tank_auth->get_user_id());
 
 			$this->load->view('header', $data);
 			$this->load->view('bookings/index', $data);
@@ -50,7 +52,8 @@ class bookings extends CI_Controller
 			$data['user_id']	= $this->tank_auth->get_user_id();
 
 			$data['username']	= $this->tank_auth->get_username();
-
+			$data['calender'] ="set";
+			$data['upcoming']="set";
 			$data['result']=$this->booking->bookings($this->tank_auth->get_user_id());
 
 			$this->load->view('header', $data);
@@ -62,9 +65,6 @@ class bookings extends CI_Controller
 	{
 		if(!$this->tank_auth->is_logged_in())
 		{
-
-
-
 			redirect('/auth/login/');
 		}
 		else
@@ -279,22 +279,12 @@ class bookings extends CI_Controller
 		else
 		{
 			$data['email']=$this->tank_auth->getUserEmail($this->input->post('user_id'));
-
 			$data['site_name'] = $this->config->item('website_name', 'tank_auth');
-
 			$this->_send_email('rejectbook', $data['email'], $data);
-
 			$booking_data=$this->booking->get_booking($this->input->post('booking_id'));
-
-
-
 			$this->booking->reject_booking($this->input->post('booking_id'));
-
 			$student_data=$this->users->get_user_details($booking_data->user_id);
-
-
 			$data['message']="You have rejected a booking from <b>".$student_data->firstname." ".$student_data->lastname;
-
 			$this->load->view('header', $data);
 			$this->load->view('/auth/general_message',$data);
 

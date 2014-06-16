@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+	<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
@@ -62,7 +62,7 @@ class Auth extends CI_Controller
 			}
 			else
 			{
-				
+					$data['calender']="set";
 					$data['nothing']='nothing';
 					$row= $this->users->get_setting($id);
 
@@ -80,6 +80,8 @@ class Auth extends CI_Controller
 			}
 		}
 	}
+
+	
 
 	function setCalendar()
     {
@@ -291,7 +293,6 @@ class Auth extends CI_Controller
 	}
 
 
-
 	function profiles($id)
 	{
 		if($this->uri->segment(3)>0)
@@ -309,7 +310,6 @@ class Auth extends CI_Controller
 					$data['lastname']=$row->lastname;
 					$data['email']=$this->tank_auth->getUserEmail($this->uri->segment(3));
 					$data['hourly_rate']=$row->hourly_rate;
-
 					$data['bio']=$row->Bio;
 					$data['eng']=$row->Eng;
 					$data['phy']=$row->Phy;
@@ -1219,6 +1219,7 @@ class Auth extends CI_Controller
 
 		return $options.$html;
 	}
+
 
 	/**
 	 * Callback function. Check if reCAPTCHA test is passed.

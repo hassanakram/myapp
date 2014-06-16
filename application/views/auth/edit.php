@@ -25,308 +25,342 @@
 			<script src="../js/ie/respond.min.js'); ?>"></script>
         <![endif]-->
     </head>
-  <body>
+  <body class="full_width">
 
-<?php
-
-$specialities= array(
-                'English' => 'English',
-                'Math' => 'Math',
-                'Science' => 'Science',
-                'Biology' => 'Biology',
-                'Physics' => 'Physics',
-                'Chemistry' => 'Chemistry',
-                );
-
-$firstname = array(
-	'name'	=> 'firstname',
-	'id'	=> 'firstname',
-	'value'	=> $firstname,
-	'maxlength'	=> 80,
-	'size'	=> 30,
-);
+    	
 
 
 
-$lastname = array(
-	'name'	=> 'lastname',
-	'id'	=> 'lastname',
-	'value'	=> $lastname,
-	'maxlength'	=> 80,
-	'size'	=> 30,
-);
+		<div id="maincontainer" class="clearfix">
+			<div id="contentwrapper">
+                <div class="main_content">
+                    				                    
+					<div class="row search_page">
+					    <div style="margin-left: 30px;" class="col-sm-12 col-md-12">
 
-
-
-
-
-
-$school = array(
-	'name'	=> 'school',
-	'id'	=> 'school',
-	'placeholder' => "School",
-	'value'	=> $school,
-	'maxlength'	=> 80,
-	'size'	=> 30,
-);
-
-$paypal_id = array(
-	'name'	=> 'paypal_id',
-	'id'	=> 'paypal_id',
-	'placeholder' => "Pay Pal id",
-	'value'	=> $paypal_id,
-	'maxlength'	=> 20,
-	'size'	=> 20,
-);
-
-
-$phone = array(
-	'name'	=> 'phone',
-	'id'	=> 'phone',
-	'placeholder' => "Phone number",
-	'value'	=> $phone,
-	'maxlength'	=> 25,
-	'size'	=> 25,
-);
-
-$postel_code = array(
-	'name'	=> 'postel_code',
-	'id'	=> 'postel_code',
-	'placeholder' => "Postcode",
-	'value'	=> $postel_code,
-	'maxlength'	=> 25,
-	'size'	=> 25,
-);
-
-
-
-
-
-
-
-
-$biography = array(
-	'name'	=> 'biography',
-	'id'	=> 'biography',
-	'cols'=>"20",
-	'rows'=>"3",
-	'class'=>"form-control",
-	'placeholder' => "Biography",
-	'value'	=> $biography,
-	'width' =>'255px',
-	'maxlength'	=> 250,
-	'size'	=> 250,
-);
-
-$hourly_rate = array(
-	'name'	=> 'hourly_rate',
-	'class'=>"form-control",
-	'id'	=> 'hourly_rate',
-	'placeholder' => "Hourly Rate",
-	'value'	=> $hourly_rate,
-	'type'=>"text",
-	'maxlength'	=> 25,
-	'size'	=> 16,
-);
-
-$start_time = array(
-	'name'	=> 'start_time',
-	'id'	=> 'start_time',
-	'placeholder' => "Start Time e.g 10:00 A.M",
-	'value'	=> $start_time,
-	'maxlength'	=> 20,
-	'size'	=> 20,
-);
-
-
-$end_time = array(
-	'name'	=> 'end_time',
-	'id'	=> 'end_time',
-	'placeholder' => "End Time e.g 08:00 P.M",
-	'value'	=> $end_time,
-	'maxlength'	=> 20,
-	'size'	=> 20,
-);
-
-
-
-
-?>
-
-<!-- <form action="dashboard.html" method="post" id="reg_form" > -->
-	<?php echo form_open_multipart('auth/update_profile',"id='login_form'"); ?>
-				<div class="top_b">Edit Your Profile</div>
-				<?php 
-					if($success == TRUE) {
-						echo '<div class="alert alert-warning alert-login">Profile Updated Successfully</div>'; 
-					}
-
-					if(!$this->tank_auth->isUpdated()) {
-						echo '<div class="alert alert-warning alert-login">Complete Your Profile</div>'; 
-					}
-
-				?>
-				
-				<div class="cnt_b">
-					<div class="form-group">
-						<label for="fileinput" class="control-label col-sm-2">User avatar</label>
-						<div class="col-sm-8">
-							<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
-								<?php
-									$path=site_url('../uploads').'/'.$thumb;
-
-									if(!is_array(getimagesize($path)))
-									{
-										$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
-									}
-								?>
-
-									<div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="<?php echo $path ?>"></div>
-
-								
-
-									<!-- <div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="http://www.placehold.it/80x80/EFEFEF/AAAAAA"></div> -->
-
-								
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 80px; height: 80px; line-height: 80px;"></div>
-								<span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" name="userfile" size="20"></span>
-								<a href="#" class="btn btn-link fileupload-exists" data-dismiss="fileupload">Remove</a>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="input-group">
-							
-							<?php echo form_input($firstname); ?>
-							<label style="color: red;"><?php echo form_error($firstname['name']); ?><?php echo isset($errors[$firstname['name']])?$errors[$firstname['name']]:''; ?></label>
-							
-						</div>
-					</div>
-
-					
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($lastname); ?>
-							<label style="color: red;"><?php echo form_error($lastname['name']); ?><?php echo isset($errors[$lastname['name']])?$errors[$lastname['name']]:''; ?></label>
-						</div>
-					</div>
-
-					
-				<?php if( ! $this->tank_auth->isTutor()): ?>
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($school); ?>
-							<label style="color: red;"><?php echo form_error($school['name']); ?><?php echo isset($errors[$school['name']])?$errors[$school['name']]:''; ?></label>
-						</div>
-					</div>				
-
-
-					<div class="form-group">
-						<div class="input-group">
-							
 							<?php
 
-										$options = array(
-														  ''  => $grade,
-														  '' => 'Grade',
-										                   '1' => 'Grade 1'  ,
-										                    '2' => 'Grade 2',
-										                   '3' => 'Grade 3',
-										                  '4' => 'Grade 4',
-										                  '5'=> 'Grade 5' ,
-										                  '6'=> 'Grade 6' ,
-										                  '7'=> 'Grade 7'  ,
-										                   '8'=> 'Grade 8' ,
-										                  '9' => 'Grade 9'  ,
-										                  '10'=> 'Grade 10'  ,
-										                  '11' => 'Grade 11' ,
-										                   '12'=> 'Grade 12' ,
-										                  'university' => 'University',
-										                );
+							$specialities= array(
+							                'English' => 'English',
+							                'Math' => 'Math',
+							                'Science' => 'Science',
+							                'Biology' => 'Biology',
+							                'Physics' => 'Physics',
+							                'Chemistry' => 'Chemistry',
+							                );
 
-										echo form_dropdown('grade', $options);
+							$firstname = array(
+								'name'	=> 'firstname',
+								'id'	=> 'firstname',
+								'value'	=> $firstname,
+								'maxlength'	=> 80,
+								'size'	=> 30,
+							);
+
+
+
+							$lastname = array(
+								'name'	=> 'lastname',
+								'id'	=> 'lastname',
+								'value'	=> $lastname,
+								'maxlength'	=> 80,
+								'size'	=> 30,
+							);
+
+
+
+
+
+
+							$school = array(
+								'name'	=> 'school',
+								'id'	=> 'school',
+								'placeholder' => "School",
+								'value'	=> $school,
+								'maxlength'	=> 80,
+								'size'	=> 30,
+							);
+
+							$paypal_id = array(
+								'name'	=> 'paypal_id',
+								'id'	=> 'paypal_id',
+								'placeholder' => "Pay Pal id",
+								'value'	=> $paypal_id,
+								'maxlength'	=> 20,
+								'size'	=> 20,
+							);
+
+
+							$phone = array(
+								'name'	=> 'phone',
+								'id'	=> 'phone',
+								'placeholder' => "Phone number",
+								'value'	=> $phone,
+								'maxlength'	=> 25,
+								'size'	=> 25,
+							);
+
+							$postel_code = array(
+								'name'	=> 'postel_code',
+								'id'	=> 'postel_code',
+								'placeholder' => "Postcode",
+								'value'	=> $postel_code,
+								'maxlength'	=> 25,
+								'size'	=> 25,
+							);
+
+
+
+
+
+
+
+
+							$biography = array(
+								'name'	=> 'biography',
+								'id'	=> 'biography',
+								'cols'=>"20",
+								'rows'=>"3",
+								'class'=>"form-control",
+								'placeholder' => "Biography",
+								'value'	=> $biography,
+								'width' =>'255px',
+								'maxlength'	=> 250,
+								'size'	=> 250,
+							);
+
+							$hourly_rate = array(
+								'name'	=> 'hourly_rate',
+								'class'=>"form-control",
+								'id'	=> 'hourly_rate',
+								'placeholder' => "Hourly Rate",
+								'value'	=> $hourly_rate,
+								'type'=>"text",
+								'maxlength'	=> 25,
+								'size'	=> 16,
+							);
+
+							$start_time = array(
+								'name'	=> 'start_time',
+								'id'	=> 'start_time',
+								'placeholder' => "Start Time e.g 10:00 A.M",
+								'value'	=> $start_time,
+								'maxlength'	=> 20,
+								'size'	=> 20,
+							);
+
+
+							$end_time = array(
+								'name'	=> 'end_time',
+								'id'	=> 'end_time',
+								'placeholder' => "End Time e.g 08:00 P.M",
+								'value'	=> $end_time,
+								'maxlength'	=> 20,
+								'size'	=> 20,
+							);
+
+
+
+
 							?>
+
+							<!-- <form action="dashboard.html" method="post" id="reg_form" > -->
+								<?php echo form_open_multipart('auth/update_profile',"id='login_form'"); ?>
+											<div class="top_b">Edit Your Profile</div>
+											<?php 
+												if($success == TRUE) {
+													echo '<div class="alert alert-warning alert-login">Profile Updated Successfully</div>'; 
+												}
+
+												if(!$this->tank_auth->isUpdated()) {
+													echo '<div class="alert alert-warning alert-login">Complete Your Profile</div>'; 
+												}
+
+											?>
+											
+											<div class="cnt_b">
+												<div class="form-group">
+													<label for="fileinput" class="control-label col-sm-2">User avatar</label>
+													<div class="col-sm-8">
+														<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
+															<?php
+																$path=site_url('../uploads').'/'.$thumb;
+
+																if(!is_array(getimagesize($path)))
+																{
+																	$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
+																}
+															?>
+
+																<div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="<?php echo $path ?>"></div>
+
+															
+
+																<!-- <div class="fileupload-new thumbnail" style="width: 80px; height: 80px;"><img src="http://www.placehold.it/80x80/EFEFEF/AAAAAA"></div> -->
+
+															
+															<div class="fileupload-preview fileupload-exists thumbnail" style="width: 80px; height: 80px; line-height: 80px;"></div>
+															<span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" name="userfile" size="20"></span>
+															<a href="#" class="btn btn-link fileupload-exists" data-dismiss="fileupload">Remove</a>
+														</div>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<div class="input-group">
+														
+														<?php echo form_input($firstname); ?>
+														<label style="color: red;"><?php echo form_error($firstname['name']); ?><?php echo isset($errors[$firstname['name']])?$errors[$firstname['name']]:''; ?></label>
+														
+													</div>
+												</div>
+
+												
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_input($lastname); ?>
+														<label style="color: red;"><?php echo form_error($lastname['name']); ?><?php echo isset($errors[$lastname['name']])?$errors[$lastname['name']]:''; ?></label>
+													</div>
+												</div>
+
+												
+											<?php if( ! $this->tank_auth->isTutor()): ?>
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_input($school); ?>
+														<label style="color: red;"><?php echo form_error($school['name']); ?><?php echo isset($errors[$school['name']])?$errors[$school['name']]:''; ?></label>
+													</div>
+												</div>				
+
+
+												<div class="form-group">
+													<div class="input-group">
+														
+														<?php
+
+																	$options = array(
+																					  ''  => $grade,
+																					  '' => 'Grade',
+																	                   '1' => 'Grade 1'  ,
+																	                    '2' => 'Grade 2',
+																	                   '3' => 'Grade 3',
+																	                  '4' => 'Grade 4',
+																	                  '5'=> 'Grade 5' ,
+																	                  '6'=> 'Grade 6' ,
+																	                  '7'=> 'Grade 7'  ,
+																	                   '8'=> 'Grade 8' ,
+																	                  '9' => 'Grade 9'  ,
+																	                  '10'=> 'Grade 10'  ,
+																	                  '11' => 'Grade 11' ,
+																	                   '12'=> 'Grade 12' ,
+																	                  'university' => 'University',
+																	                );
+
+																	echo form_dropdown('grade', $options);
+														?>
+													</div>
+												</div>
+
+											<?php else: ?>
+
+												
+
+												<div class="form-group">
+													<div class="input-group">	
+														<br />
+
+														<?php foreach($specialities as $key => $value) : ?>
+															        <input type="checkbox" class="specialities" name="<?php echo $key;?>" value="<?php echo $value;?>">&nbsp;<?php echo $key;?>&nbsp;&nbsp;
+															    <?php endforeach;?>
+															    <br /><br />
+														<input type="checkbox" id="other" name="other" value="other">&nbsp;Other(any)<br /><br />
+													</div>
+												</div>
+
+
+												
+
+												
+
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-addon">$</span>
+														<?php echo form_input($hourly_rate); ?>
+														
+														<label style="color: red;"><?php echo form_error($hourly_rate['name']); ?><?php echo isset($errors[$hourly_rate['name']])?$errors[$hourly_rate['name']]:''; ?></label>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_textarea($biography); ?>
+														<label style="color: red;"><?php echo form_error($biography['name']); ?><?php echo isset($errors[$biography['name']])?$errors[$biography['name']]:''; ?></label>
+													</div>
+												</div>
+
+											<?php endif; ?>
+
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_input($paypal_id); ?>
+														<label style="color: red;"><?php echo form_error($paypal_id['name']); ?><?php echo isset($errors[$paypal_id['name']])?$errors[$paypal_id['name']]:''; ?></label>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_input($postel_code); ?>
+														<label style="color: red;"><?php echo form_error($postel_code['name']); ?><?php echo isset($errors[$postel_code['name']])?$errors[$postel_code['name']]:''; ?></label>
+													</div>
+												</div>
+
+
+												<div class="form-group">
+													<div class="input-group">
+														<?php echo form_input($phone); ?>
+														<label style="color: red;"><?php echo form_error($phone['name']); ?><?php echo isset($errors[$phone['name']])?$errors[$phone['name']]:''; ?></label>
+													</div>
+												</div>
+
+												
+
+												
+
+
+
+											<div class="btm_b tac">
+												
+												<?php echo form_submit('save', 'Save',"class='btn btn-default'"); ?>
+												
+											</div>  
+										</form>
+										<?php echo form_close(); ?>
+									</div>
+
+							    </div>
+							</div>           
 						</div>
 					</div>
+				</div>
 
-				<?php else: ?>
+			<?php
+				$rootDir = "";
+				if(strpos($_SERVER['HTTP_HOST'],'localhost')===FALSE)
+				{
+				  //On Production
+				  $rootDir = $_SERVER['DOCUMENT_ROOT'].'/application/views';
+				}
+				else
+				{
+				  //On Dev server
+				  $rootDir = $_SERVER['DOCUMENT_ROOT'].'/myapp/application/views';
+				}
+			?>
+			<?php include($rootDir.'/sidebar.php');?>
 
-					
-
-					<div class="form-group">
-						<div class="input-group">	
-							<br />
-
-							<?php foreach($specialities as $key => $value) : ?>
-								        <input type="checkbox" class="specialities" name="<?php echo $key;?>" value="<?php echo $value;?>">&nbsp;<?php echo $key;?>&nbsp;&nbsp;
-								    <?php endforeach;?>
-								    <br /><br />
-							<input type="checkbox" id="other" name="other" value="other">&nbsp;Other(any)<br /><br />
-						</div>
-					</div>
-
-
-					
-
-					
-
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon">$</span>
-							<?php echo form_input($hourly_rate); ?>
-							
-							<label style="color: red;"><?php echo form_error($hourly_rate['name']); ?><?php echo isset($errors[$hourly_rate['name']])?$errors[$hourly_rate['name']]:''; ?></label>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_textarea($biography); ?>
-							<label style="color: red;"><?php echo form_error($biography['name']); ?><?php echo isset($errors[$biography['name']])?$errors[$biography['name']]:''; ?></label>
-						</div>
-					</div>
-
-				<?php endif; ?>
-
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($paypal_id); ?>
-							<label style="color: red;"><?php echo form_error($paypal_id['name']); ?><?php echo isset($errors[$paypal_id['name']])?$errors[$paypal_id['name']]:''; ?></label>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($postel_code); ?>
-							<label style="color: red;"><?php echo form_error($postel_code['name']); ?><?php echo isset($errors[$postel_code['name']])?$errors[$postel_code['name']]:''; ?></label>
-						</div>
-					</div>
-
-
-					<div class="form-group">
-						<div class="input-group">
-							<?php echo form_input($phone); ?>
-							<label style="color: red;"><?php echo form_error($phone['name']); ?><?php echo isset($errors[$phone['name']])?$errors[$phone['name']]:''; ?></label>
-						</div>
-					</div>
-
-					
-
-					
-
-
-
-				<div class="btm_b tac">
-					
-					<?php echo form_submit('save', 'Save',"class='btn btn-default'"); ?>
-					
-				</div>  
-			</form>
-			<?php echo form_close(); ?>
 
 		<script src="<?php echo site_url('../js/jquery.min.js'); ?>"></script>
         <script src="<?php echo site_url('../js/jquery.actual.min.js'); ?>"></script>

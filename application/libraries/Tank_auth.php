@@ -140,6 +140,9 @@ class Tank_auth
 		return $this->ci->session->userdata('user_id');
 	}
 
+
+
+
 	function isTutor()
 	{
 
@@ -188,13 +191,6 @@ class Tank_auth
 		return $row->phone;
 	}
 
-	
-
-
-	
-
-
-	
 
 	function getUserEmail($user_id)
 	{
@@ -256,7 +252,8 @@ class Tank_auth
 				'last_ip'	=> $this->ci->input->ip_address(),
 			);
 
-			if ($email_activation) {
+			if ($email_activation) 
+			{
 				$data['new_email_key'] = md5(rand().microtime());
 			}
 			if (!is_null($res = $this->ci->users->create_user($data, !$email_activation))) {
