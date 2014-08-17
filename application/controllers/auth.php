@@ -14,11 +14,32 @@ class Auth extends CI_Controller
 		$this->load->model('tank_auth/users');
 	}
 
+	function addSubject()
+	{
+		if($this->tank_auth->is_logged_in())
+		{
+			$subs=$this->input->post('subject');
+			$grds=$this->input->post('grades');
+			$userDetails=$this->users->getUserDetails($this->tank_auth->get_user_id());
+			
+			$this->users->setUserSubjects($this->tank_auth->get_user_id(),$userDetails->subjects.$subs.":".$grds."#");
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+
+
+
 	function index()
 	{
 		if ($message = $this->session->flashdata('message')) 
 		{
-
 			$data['is_logged_in']=$this->tank_auth->is_logged_in();
 			$this->load->view('header', $data);
 
@@ -50,7 +71,7 @@ class Auth extends CI_Controller
 
 	function timing_calender($id=NULL)
 	{
-		if($id===NULL)
+		if($id===NULL || $this->tank_auth->get_user_id()!=$id )
 		{
 			show_404();
 		}
@@ -65,8 +86,6 @@ class Auth extends CI_Controller
 					$data['calender']="set";
 					$data['nothing']='nothing';
 					$row= $this->users->get_setting($id);
-
-
 					$data['sunday']=$row->sunday;
 					$data['monday']=$row->monday;
 					$data['tuesday']=$row->tuesday;
@@ -74,7 +93,6 @@ class Auth extends CI_Controller
 					$data['thursday']=$row->thursday;
 					$data['friday']=$row->friday;
 					$data['saturday']=$row->saturday;
-
 					$this->load->view('header', $data);
 					$this->load->view('auth/calender', $data);
 			}
@@ -88,7 +106,6 @@ class Auth extends CI_Controller
     	if (!empty($_POST)&& $this->tank_auth->isTutor())
     	{
 	        $post = array();
-
 	        $mond="";
 	        $tuesd="";
 	        $wednes="";
@@ -96,10 +113,12 @@ class Auth extends CI_Controller
 			$frid="";
 			$satur="";
 			$sund="";
+
+			
 			
 			foreach ( array_keys($_POST) as $key )
 	        {
-	        	
+
 	            $post[$key] = $this->input->post($key);
 
 	            $pieces = explode("_", $key);
@@ -140,7 +159,7 @@ class Auth extends CI_Controller
 	        }
 
 
-	/*        echo 'monday:'.$mond.'</br>';
+	/*      echo 'monday:'.$mond.'</br>';
 	        echo 'tuesday:'.$tuesd.'</br>';
 	        echo 'wednesday:'.$wednes.'</br>';
 	        echo 'thursday:'.$thurs.'</br>';
@@ -310,13 +329,7 @@ class Auth extends CI_Controller
 					$data['lastname']=$row->lastname;
 					$data['email']=$this->tank_auth->getUserEmail($this->uri->segment(3));
 					$data['hourly_rate']=$row->hourly_rate;
-					$data['bio']=$row->Bio;
-					$data['eng']=$row->Eng;
-					$data['phy']=$row->Phy;
-					$data['math']=$row->Math;
-					$data['science']=$row->Science;
-					$data['chem']=$row->Chem;
-					$data['other']=$row->specialities_other;
+					
 
 					$data['free_from']=$row->free_from;
 					$data['free_till']=$row->free_till;
@@ -505,6 +518,9 @@ class Auth extends CI_Controller
 		$id = $this->tank_auth->get_user_id();
 		$returnresults = $this->db->get_where('user_profiles', array('user_id' => $id));
 
+		
+
+
 		if ($returnresults->num_rows() > 0)
 		{
 			$row = $returnresults->row();
@@ -516,14 +532,8 @@ class Auth extends CI_Controller
 				'grade' => $row->grade,
 				'phone' => $row->phone,
 				'postel_code' => $row->postel_code,
-				'specialities_other' => $row->specialities_other,
-				'bio'  =>   $row->Bio,
-				'eng'  => $row->Eng,
-				'phy'  => $row->Phy,
-				'math' =>  $row->Math,
-				'science' => $row->Science,
-				'chem' => $row->Chem,
-				'other' => $row->specialities_other,
+				
+				
 
 				'free_from' => $row->free_from,
 				'free_till' => $row->free_till,
@@ -536,11 +546,14 @@ class Auth extends CI_Controller
 				'paypal_id' => $row->paypal_id,
 				'thumb' => $row->thumb,
 				'photo' => $row->photo,
+
 				'success' => FALSE
 			   );
 
-					
-					
+			
+			$subs=$row->subjects;
+			$subjects = explode("#", $subs);
+			$data['subjects']=$subjects;
 
 
 			$data['title'] = 'Edit Profile';

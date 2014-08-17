@@ -88,7 +88,7 @@
 						<div class="input-group">
 							<div class="onoffswitch">
 							    
-							    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" value="1" <?php echo $setting ?> >
+							    <input style="opacity:0; position:absolute; left:9999px;" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" value="1" <?php echo $setting ?> >
 							    
 							    <label class="onoffswitch-label" for="myonoffswitch">
 							        <div class="onoffswitch-inner"></div>

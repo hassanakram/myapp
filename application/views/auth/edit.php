@@ -17,6 +17,10 @@
             <link rel="shortcut icon" href="<?php echo site_url('../favicon.ico'); ?>" />
 
         <link rel="stylesheet" href="<?php echo site_url('../lib/chosen/chosen.css'); ?>" />
+        
+        <link rel="stylesheet" href="<?php echo site_url('../css/bootstrap-dialog.css'); ?>" />
+
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     
         <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
     
@@ -27,27 +31,69 @@
     </head>
   <body class="full_width">
 
-    	
-
-
-
+  	
 		<div id="maincontainer" class="clearfix">
 			<div id="contentwrapper">
                 <div class="main_content">
-                    				                    
 					<div class="row search_page">
-					    <div style="margin-left: 30px;" class="col-sm-12 col-md-12">
+
+					<?php if ($this->tank_auth->isTutor()): ?>
+						<div class="add_subjects">
+							<h2>My Subjects</h2>
+							<table id="subs_table" class="table table-bordered">
+							  <tr>
+							    <th>Subjects</th>
+							    <th>Grades</th>
+							  </tr>
+							<?php  
+								foreach ($subjects as $val) 
+								{
+									if(str_replace(' ', '', $val)=="")
+										break;
+									$pieces=explode(":", $val);
+									echo '<tr><td>'.$pieces[0].'</td><td>'.$pieces[1].'</td></tr>';
+								}
+							?>
+							  
+							</table>
+							<div class="add_new">
+								<a id="add_new_subject" href="javascript:void(0)" >Add New Subject</a>
+								<div class="hidden_div">
+									<div class="form-group">
+										<select id="subjects" name ='action'>
+								            <?php
+								                
+								                $array = array(
+												         "English",
+												         "Math",
+												    	 "Geography",
+												         "Chemistry",
+												         "Physics",
+												         "Biology",
+												);
+								                foreach ($array as $value) {
+								                    echo "<option value='$value'>$value</option>\n";
+								                }       
+								            ?>
+								        </select>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<input type="text" id="grades" placeholder="Grades" size="50" />
+										</div>
+									</div>
+									<div class="form-group">
+										<div id="#add_clicked" class="input-group">
+											<button onclick="hideAndSubmit()"  type="submit" class="btn btn-default">Add Subject</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+					    <div style="margin-left: -100px;" class="col-sm-12 col-md-12">
 
 							<?php
-
-							$specialities= array(
-							                'English' => 'English',
-							                'Math' => 'Math',
-							                'Science' => 'Science',
-							                'Biology' => 'Biology',
-							                'Physics' => 'Physics',
-							                'Chemistry' => 'Chemistry',
-							                );
 
 							$firstname = array(
 								'name'	=> 'firstname',
@@ -266,24 +312,6 @@
 											<?php else: ?>
 
 												
-
-												<div class="form-group">
-													<div class="input-group">	
-														<br />
-
-														<?php foreach($specialities as $key => $value) : ?>
-															        <input type="checkbox" class="specialities" name="<?php echo $key;?>" value="<?php echo $value;?>">&nbsp;<?php echo $key;?>&nbsp;&nbsp;
-															    <?php endforeach;?>
-															    <br /><br />
-														<input type="checkbox" id="other" name="other" value="other">&nbsp;Other(any)<br /><br />
-													</div>
-												</div>
-
-
-												
-
-												
-
 												<div class="form-group">
 													<div class="input-group">
 														<span class="input-group-addon">$</span>
@@ -325,11 +353,6 @@
 													</div>
 												</div>
 
-												
-
-												
-
-
 
 											<div class="btm_b tac">
 												
@@ -345,6 +368,8 @@
 						</div>
 					</div>
 				</div>
+
+				
 
 			<?php
 				$rootDir = "";
@@ -370,6 +395,8 @@
 
 
     <script src="<?php echo site_url('../js/jquery-migrate.min.js'); ?>"></script>
+    
+    <script src="<?php echo site_url('../js/bootstrap-dialog.js'); ?>"></script>
     <script src="<?php echo site_url('../lib/jquery-ui/jquery-ui-1.10.0.custom.min.js'); ?>"></script>
     <!-- touch events for jquery ui-->
 	<script src="<?php echo site_url('../js/forms/jquery.ui.touch-punch.min.js'); ?>"></script>
@@ -382,8 +409,7 @@
     
     <!-- bootstrap plugins -->
 	<script src="<?php echo site_url('../js/bootstrap.plugins.min.js'); ?>"></script>
-	<!-- typeahead -->
-	<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
+	
     <!-- code prettifier -->
 	<script src="<?php echo site_url('../lib/google-code-prettify/prettify.min.js'); ?>"></script>
     <!-- sticky messages -->
@@ -404,9 +430,7 @@
 	<!-- mobile nav -->
 	<script src="<?php echo site_url('../js/selectNav.js'); ?>"></script>
 
-	<!-- common functions -->
-	<script src="<?php echo site_url('../js/gebo_common.js'); ?>"></script>
-
+	
 	<!-- common functions -->
 	<script src="<?php echo site_url('../lib/chosen/chosen.jquery.min.js'); ?>"></script>
 
@@ -418,9 +442,100 @@
 
 
         <script>
+	        
+	        function hideAndSubmit()
+			{
+				 $('.hidden_div').hide();
+				var e = document.getElementById("subjects");
+				var subects = e.options[e.selectedIndex].value;
+				var grade=document.getElementById('grades').value;
+				
+				$.ajax({
+					type: "POST",
+					url:'<?php echo site_url("/auth/addSubject") ?>', 
+					data: {subject: subects,
+					grades: grade},
+					dataType: "text",  
+					cache:false,
+					success: 
+				    function(data){
+				    	$('#subs_table tr:last').after('<tr><td>'+subects+'</td><td>'+grade+'</td></tr>');
+				    }
+				});// you have missed this bracket
+ 
+			}
+
             $(document).ready(function(){
 
 
+            	
+            	$('.hidden_div').hide();
+
+            	$('#add_new_subject').click(function(){
+				    $('.hidden_div').show();
+				});
+
+				
+				$(function() {
+				    var items = [ 'English', 'Biology', 'Physics', 'Chemistry', 
+				        'Math', 'History', 'Geography' ];
+
+				    var items2 = [ 'k-6', '7-10', '2U', '3U', 
+				        '4U', 'University'];
+				        
+				    function split( val ) {
+				      return val.split( /,\s*/ );
+				    }
+				    function extractLast( term ) {
+				      return split( term ).pop();
+				    }
+				 
+				    $( "#subjects" )
+				      .autocomplete({
+				        minLength: 0,
+				        source: function( request, response ) {
+				          response( $.ui.autocomplete.filter(
+				            items, extractLast( request.term ) ) );
+				        },
+				        focus: function() {
+				          return false;
+				        },
+				        select: function( event, ui ) {
+				          var terms = split( this.value );
+				          // remove the current input
+				          terms.pop();
+				          // add the selected item
+				          terms.push( ui.item.value );
+				          // add placeholder to get the comma-and-space at the end
+				          terms.push( "" );
+				          this.value = terms.join( ", " );
+				          return false;
+				        }
+				      });
+
+				      $( "#grades" )
+				      .autocomplete({
+				        minLength: 0,
+				        source: function( request, response ) {
+				          response( $.ui.autocomplete.filter(
+				            items2, extractLast( request.term ) ) );
+				        },
+				        focus: function() {
+				          return false;
+				        },
+				        select: function( event, ui ) {
+				          var terms = split( this.value );
+				          // remove the current input
+				          terms.pop();
+				          // add the selected item
+				          terms.push( ui.item.value );
+				          // add placeholder to get the comma-and-space at the end
+				          terms.push( "" );
+				          this.value = terms.join( ", " );
+				          return false;
+				        }
+				      });
+				  });
              	 
 
                 
@@ -479,5 +594,7 @@
 				});
             });
         </script>
+
+
     </body>
 </html>

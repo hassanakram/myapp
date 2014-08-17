@@ -52,20 +52,59 @@
     </head>
     <body class="full_width">
 
-    	
+    <?php
+					$specialities= array(
+		                'English' => 'english',
+		                'Math' => 'math',
+		                'Science' => 'Science',
+		                'Biology' => 'biology',
+		                'Physics' => 'physics',
+		                'Chemistry' => 'chemistry',
+		                );
 
+					$postel_code = array(
+						'5',
+						'10',
+						'20',
+						'50',
+						'Unlimited'
+					);
+
+					$last_name = array(
+						'name'	=> 'lastname',
+						'id'	=> 'lastname',
+						'placeholder'	=> 'Last Name',
+						'width'=>'150px',
+						'style'=>'width:170px',
+					);
+
+					$hourly_rate = array(
+						'name'	=> 'hourly_rate',
+						'id'	=> 'hourly_rate',
+						'placeholder'	=> 'Hourly Rate $',
+						'style'=>'width:170px',
+
+					);
+
+					$rating = array(
+						'1',
+						'2',
+						'3',
+						'4',
+						'5'
+					);
+				?>
 
 
 		<div id="maincontainer" class="clearfix">
 			<div id="contentwrapper">
                 <div class="main_content">
-                    				                    
 					<div class="row search_page">
 					    <div style="margin-left: 30px;" class="col-sm-12 col-md-12">
 					    	<?php if($this->tank_auth->isTutor()): ?>
 					        	
 					        	<div style="display:inline; float:left" class='rating_details'>
-					        		<h4 style="display:inline;">Your average star rating : 
+					        		<h4 style="display:inline;font-size:20px;">average star rating : 
 					        		 </h4>
 
 
@@ -73,25 +112,25 @@
 					        	<?php 
 									$percent= ($average_rating/5)*100; 
 								?>
-				        		<span style="margin-left: 190px; display: block; width: 65px; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 0;">
+				        		<span style="margin-left: 200px; display: block; width: 65px; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 0;">
 									<span style="display: block; width: <?php echo $percent; ?>%; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 -13px;"></span>
 								</span>
 					        </br>
 					        	<div style="display:inline; float:left" class='rating_details'>
-					        		<h4 style="display:inline;" >Last ten star rating :  </h4>
+					        		<h4 style="display:inline; font-size:20px;" >Last ten star rating :  </h4>
 					        		
 					        	</div>
 					        	<?php 
 									$percent= ($LastTen_rating/5)*100; 
 								?>
-				        		<span style="margin-left: 150px; display: block; width: 65px; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 0;">
+				        		<span style="margin-left: 200px; display: block; width: 65px; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 0;">
 									<span style="display: block; width: <?php echo $percent; ?>%; height: 13px; background: url('<?php echo site_url('../img/stars.png'); ?>') 0 -13px;"></span>
 								</span>
 
 					        </br>
 											        	
 					    		<div style="float:right;margin-top: -40;margin-right: 73px;" class='rating_details'>
-					        		<h4>Status Points : <?php echo $status_points; ?> </h4>
+					        		<h4 style="font-size:20px;" >Status Points : <?php echo $status_points; ?> </h4>
 					        	</div>
 
 					        </br>
@@ -104,7 +143,7 @@
 					        	?>
 					        </br>
 					        	<div style="float:right;margin-top: -60;margin-right: 40px;" class='rating_details'>
-					        		<h4>Points until <div style="color:#FFD65A;display:inline;">GOLD</div>  : <?php echo $status_points_remaining ?> </h4>
+					        		<h4 style="font-size:20px;margin-top:5px;">Points until <div style="color:#FFD65A;display:inline;">GOLD</div>  : <?php echo $status_points_remaining ?> </h4>
 					        	</div>
 
 					        	<div class='rating_details'>
@@ -156,7 +195,70 @@
 							</div>
 
 					        <?php else: ?>
-					        	<h3 class="heading"><small>Search results</small></h3>
+					        	<h3 class="heading"><small>Search For Tutors</small></h3>
+					        	
+					        	<div class="row search_page">
+									    <div style="margin-left: 30px;" class="col-sm-12 col-md-12">
+									    	<h2>Search Tutor</h2>
+												<?php echo form_open('auth/search',"id='search_form'"); ?>
+												<div class="filter_items">
+													<h3>Distance</h3>
+													<?php
+														$options = array(
+														                  	'English' => 'english',
+															                'Math' => 'math',
+															                'Science' => 'Science',
+															                'Biology' => 'biology',
+															                'Physics' => 'physics',
+															                'Chemistry' => 'chemistry',
+															                'History' => 'History',
+															                'Geography' => 'Geography',
+														                );
+
+														echo form_dropdown('subjects', $options,"","style='width:170px'");
+													?>
+												</div>
+
+												<div class="filter_items">
+													<h3>Distance</h3>
+													<?php
+														$options = array(
+														                  '0'  => 'Unlimited',
+														                  '5'  => '5',
+														                  '10'  => '10',
+														                  '20'  => '20',
+														                  '50'  => '50'
+														                );
+
+														echo form_dropdown('rating', $options,"","style='width:170px'");
+													?>
+												</div>
+												<div  class="filter_items">
+													<?php echo form_input($hourly_rate); ?>
+												</div>
+												
+												<div class="filter_items">
+													<h3>Minimum Rating</h3>
+													<?php
+														$options = array(
+														                  '0'  => 'Any',
+														                  '1'  => '1',
+														                  '2'  => '2',
+														                  '3'  => '3',
+														                  '4'  => '4',
+														                  '5'  => '5'
+														                );
+
+														echo form_dropdown('rating', $options,"","style='width:170px'");
+													?>
+												</div>
+												
+												<?php echo form_submit('Search', 'Search',"class='btn btn-default'"); ?>
+									    </div>
+									</div>
+									
+								
+
 					        <?php endif; ?>
 
 					        <?php

@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Notification</title>
+        <title>Booking Details</title>
     
         <!-- Bootstrap framework -->
             <link rel="stylesheet" href="<?php echo site_url('../bootstrap/css/bootstrap.min.css'); ?>" />
@@ -29,38 +29,28 @@
     <body>
 
 
-
-
-
-		
 		<div class="login_box">
 			
+			<div class="top_b"  style="margin-left: 52;">Booking Details</div>
 			
-				<div class="top_b"  style="margin-left: 52;">Notification</div>    
-				<div class="cnt_b">
-					<div class="form-group">
-						<div class="input-group">
-								<?php echo $message; ?>
-						</div>
+			<div class="cnt_b">
+				<div class="form-group">
+					<div class="input-group">
+							<?php echo $message; ?>
 					</div>
-
-					<div class="form-group">
-						<div class="input-group">
-								<a href="javascript:history.back()" class="btn btn-default btn-sm pull-right">Go back</a>
-						</div>
-					</div>
-					
 				</div>
-				<div 
-				class="btm_b clearfix">
-					<!-- <button class="btn btn-default btn-sm pull-right" type="submit">Sign In</button> -->
 
-					
+				<div class="form-group">
+					<div class="input-group">
+							<a href="javascript:history.back()" class="btn btn-default btn-sm pull-right">Go back</a>
+					</div>
+				</div>
+				
+			</div>
 
-				</div>  
-			</form>
-			
-			
+			<div class="btm_b clearfix">
+				<!-- <button class="btn btn-default btn-sm pull-right" type="submit">Sign In</button> -->
+			</div>  
 		</div>
 		 
         <script src="<?php echo site_url('../js/jquery.min.js'); ?>"></script>

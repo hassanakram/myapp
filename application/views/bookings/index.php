@@ -58,9 +58,9 @@
                 <div class="main_content">
                     				                    
 					<div class="row search_page">
-					    <div  class="col-sm-12 col-md-12">
+					    <div style="margin-left: 18px;"  class="col-sm-12 col-md-12">
 					        <h3 class="heading"><small>Booking with</small></h3>
-					        <div><b><h3> Pending Approval</h3></b></div>
+					        <div><b><h3> Pending approval</h3></b></div>
 
 					        <table class='pending_bookings'>
 								<?php
@@ -121,9 +121,11 @@
 												{
 													echo '<span class="label label-info"> Accepted  </span>';
 												}
+												
+												$date=$row->from_date;
+												$newDate = date("d-m-Y", strtotime($date));
 
-
-												echo '</h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
+												echo '</h4><p class="sepH_b item_description">'.$newDate.'</br>'.$row->from_time.'</p> ';
 
 												$id = $row->id;
 
@@ -188,8 +190,10 @@
 														$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
 													}
 
+													$date=$row->from_date;
+													$newDate = date("d-m-Y", strtotime($date));
 
-													echo '<div style="width:270px;background:#f2f8fd;margin-right: 15px;margin-bottom: 15px;;" class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a> </h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
+													echo '<div style="width:270px;background:#f2f8fd;margin-right: 15px;margin-bottom: 15px;;" class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a> </h4><p class="sepH_b item_description">'.$newDate.'</br>'.$row->from_time.'</p> ';
 
 													$id = $row->id;
 													echo "<div 'style=' display:inline; ' '>";
@@ -237,8 +241,6 @@
 								</table>
 					        </div>
 
-					        
-
 					    </div>
 
 					    <div  class="col-sm-12 col-md-12">
@@ -274,10 +276,7 @@
 												
 												foreach($upcoming as $row)
 												{
-													
-														
-
-														if( $this->tank_auth->isTutor($user_id))
+													if( $this->tank_auth->isTutor($user_id))
 								    					{
 								    						
 								    						$name=$this->tank_auth->get_fullname($row->user_id);
@@ -289,7 +288,10 @@
 															
 														echo '<tr class="odd">';
 
-														echo '<td class=" sorting_1">'.$row->from_date.'</td>';
+														$date=$row->from_date;
+														$newDate = date("d-m-Y", strtotime($date));
+
+														echo '<td class=" sorting_1">'.$newDate.'</td>';
 														echo '<td class=" sorting_1">'.$row->from_time.'</td>';
 														
 														echo '<td class=" sorting_1">'.$row->subject.'</td>';
@@ -331,7 +333,7 @@
 
 
 							        <thead>
-							        	<tr role="row"><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 200px;" aria-label="Browser: activate to sort column ascending">Date</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 200px;" aria-label="Engine version: activate to sort column ascending">Time</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">Subject</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending"><?php echo $userType; ?></th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">Rating</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">Review</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">Dispute</th></tr>
+							        	<tr role="row"><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 13%;" aria-label="Browser: activate to sort column ascending">Date</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 13%;" aria-label="Engine version: activate to sort column ascending">Time</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 13%;" aria-label="Engine version: activate to sort column ascending">Subject</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 13%;" aria-label="Engine version: activate to sort column ascending"><?php echo $userType; ?></th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 13%;" aria-label="Engine version: activate to sort column ascending">Rating</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 25%;" aria-label="Engine version: activate to sort column ascending">Review</th><?php if(!$this->tank_auth->isTutor()): ?><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 20%;" aria-label="Engine version: activate to sort column ascending">Dispute</th><?php endif; ?></tr>
 							        </thead>
 							        <tbody role="alert" aria-live="polite" aria-relevant="all"><tr class="odd">
 
@@ -365,7 +367,10 @@
 															
 														echo '<tr class="odd">';
 
-														echo '<td class=" sorting_1">'.$row->from_date.'</td>';
+														$date=$row->from_date;
+														$newDate = date("d-m-Y", strtotime($date));
+
+														echo '<td class=" sorting_1">'.$newDate.'</td>';
 
 														echo '<td class=" sorting_1">'.$row->from_time.'</td>';
 														
@@ -378,7 +383,7 @@
 														
 														$percent= ($row->rating/5)*100;
 														
-										        		echo '<span style="margin-left: 190px; display: block; width: 65px; height: 13px; background: url('.site_url("../img/stars.png").') 0 0;">';
+										        		echo '<span style="margin-left: 10px; display: block; width: 65px; height: 13px; background: url('.site_url("../img/stars.png").') 0 0;">';
 														echo '<span style="display: block; width:'.$percent.'%; height: 13px; background: url('.site_url("../img/stars.png").') 0 -13px;"></span>';
 														echo  '</span>';
 
@@ -391,26 +396,28 @@
 														$combinedDT = date('Y-m-d H:i:s',strtotime("$row->from_date $row->from_time"));												
 
 														$interval =  date_create($combinedDT)->diff(date_create('now'));
-
-														if($row->is_disputed==1)
+														if (!$this->tank_auth->isTutor())
 														{
-															echo '<td class=" sorting_1" style="color:red;">A dispute request has been submitted</td>';
-
-														}
-														else if($interval->days==0)
-														{
-															if($row->is_disputed==0)
+															if($row->is_disputed==1)
 															{
-																echo '<td class=" sorting_1">';
-																echo form_open("bookings/make_dispute","style ='float: left; padding: 5px;' ");
-																echo ' <input type="hidden" id="id" name="user_id" value="'.$row->tutor_id.'">  <input type="hidden" id="id" name="booking_id" value="'.$row->id.'">  <input type="submit" value="Make Dispute Transanction" class="btn btn-gebo" />  ';
-																echo form_close();
-																echo '</td>';
+																echo '<td class=" sorting_1" style="color:red;">A dispute request has been submitted</td>';
+
 															}
-														}
-														else
-														{
-															echo '<td class=" sorting_1">Time passed more then 24 hours</td>';	
+															else if($interval->days==0)
+															{
+																if($row->is_disputed==0)
+																{
+																	echo '<td class=" sorting_1">';
+																	echo form_open("bookings/make_dispute","style ='float: left; padding: 5px;' ");
+																	echo ' <input type="hidden" id="id" name="user_id" value="'.$row->tutor_id.'">  <input type="hidden" id="id" name="booking_id" value="'.$row->id.'">  <input type="submit" value="Make Dispute Transanction" class="btn btn-gebo" />  ';
+																	echo form_close();
+																	echo '</td>';
+																}
+															}
+															else
+															{
+																echo '<td class=" sorting_1">Time passed more then 24 hours</td>';	
+															}
 														}
 														echo '</tr>';
 															

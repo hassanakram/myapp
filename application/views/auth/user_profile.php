@@ -60,7 +60,7 @@
                 <div class="main_content">
                     				                    
 					<div class="row search_page">
-					    <div class="col-sm-12 col-md-12">
+					    <div  class="col-sm-12 col-md-12">
 
 
 					        <!-- ********************************************************* -->

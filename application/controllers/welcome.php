@@ -11,6 +11,7 @@ class Welcome extends CI_Controller
 		$this->load->model('booking');
 	}
 
+
 	function index()
 	{
 		if (!$this->tank_auth->is_logged_in()) 

@@ -21,8 +21,6 @@ class bookings extends CI_Controller
 		if (!$this->tank_auth->is_logged_in())
 		{
 			redirect('/auth/login/');
-
-
 		} 
 		else 
 		{
@@ -36,6 +34,41 @@ class bookings extends CI_Controller
 
 			$this->load->view('header', $data);
 			$this->load->view('bookings/index', $data);
+		}
+	}
+
+	function details($id=NULL)
+	{
+		if($id==NULL || $this->booking->get_booking($id)==false)
+		{
+			show_404();
+		}
+		else
+		{
+
+			$booking_data=$this->booking->get_booking($id);
+
+			if($booking_data->user_id==$this->tank_auth->get_user_id() || $booking_data->tutor_id==$this->tank_auth->get_user_id())
+			{
+				$student_data=$this->users->get_user_details($booking_data->user_id);
+				
+				if($booking_data->user_id==$this->tank_auth->get_user_id())
+				{
+					$student_data=$this->users->get_user_details($booking_data->tutor_id);
+					$data['message']=" Tutor Name : <b>".$student_data->firstname." ".$student_data->lastname."</b></br>"." Booking Time : <b> ".$booking_data->from_time." </b> </br> Booking Date : <b>".$booking_data->from_date."</b></br>"." Booking Place : <b>Dummy Location</b></br>";
+				}
+				else
+				{
+					$data['message']=" Student Name : <b>".$student_data->firstname." ".$student_data->lastname."</b></br>"." Booking Time : <b> ".$booking_data->from_time." </b> </br> Booking Date : <b>".$booking_data->from_date."</b></br>"." Booking Place : <b>Dummy Location</b></br>";
+				}
+
+				$this->load->view('header', $data);
+				$this->load->view('/bookings/booking_details',$data);
+			}
+			else
+			{
+				show_404();
+			}
 		}
 	}
 
@@ -54,12 +87,13 @@ class bookings extends CI_Controller
 			$data['username']	= $this->tank_auth->get_username();
 			$data['calender'] ="set";
 			$data['upcoming']="set";
-			$data['result']=$this->booking->bookings($this->tank_auth->get_user_id());
-
+			$data['result']=$this->booking->nextFiveWeekBookings($this->tank_auth->get_user_id());
 			$this->load->view('header', $data);
 			$this->load->view('bookings/upcoming', $data);
 		}
 	}
+
+
 
 	function make_dispute()
 	{
@@ -181,6 +215,8 @@ class bookings extends CI_Controller
 				$this->book();
 			}
 
+			$row=$this->booking->get_setting($this->input->post('tutor_id'));
+			$data['week']=$row;
 			$data['tutor_id']=$this->input->post('tutor_id');
 			$data['tutor_name']=$this->input->post('tutor_name');
 			$data['std_id']=$this->tank_auth->get_user_id();

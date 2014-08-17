@@ -18,11 +18,17 @@ class booking extends CI_Model
 
 	function __construct()
 	{
-
 		parent::__construct();
-		
 	}
 
+	function get_setting($id)
+	{
+		$this->db->where('tutor_id', $id);
+		$query = $this->db->get('calender_view');
+		//if ($query->num_rows() > 0) 
+			return $query->first_row();
+		//return NULL;
+	}
 
 	function book1($user_id,$data)
 	{
@@ -127,7 +133,7 @@ class booking extends CI_Model
 		
 		$count=0;
 		$total=0;
-
+		
 		foreach ($query->result() as $row)
 		{
 		   if($row->feedback==1)
@@ -162,7 +168,7 @@ class booking extends CI_Model
 	{
 			$this->db->where('id', $booking_id);
 			
-			$this->db->update($this->table_name, array('status'		=> 1,'changed' => 0 ));
+			$this->db->update($this->table_name, array ('status'=> 1,'changed' => 0 ));
 	}
 
 
@@ -171,9 +177,42 @@ class booking extends CI_Model
 	{
 			$this->db->where('id', $booking_id);
 			$this->db->update($this->table_name, array (
-				'status'		=> 0,'changed' => 0
+				'status'=> 0,'changed' => 0
 			));
 	}
+
+
+	function nextFiveWeekBookings($user_id)
+	{
+		if( $this->tank_auth->isTutor($user_id))
+		{
+			$this->db->where('tutor_id', $user_id);
+		}
+		else
+		{
+			$this->db->where('user_id', $user_id);
+		}
+
+		//current date
+		$date=date("Y-m-d");
+		
+		//upcoming bookings
+		$this->db->where('from_date >',$date);
+		
+		$date = new DateTime("NOW");
+
+		//next five weeks + 1 day
+		$date->modify('+36 day');
+
+		
+		$this->db->where('from_date <',$date->format('Y-m-d'));
+		
+		$this->db->order_by("from_date", "desc");
+		$query = $this->db->get('bookings');
+
+		return $query->result();
+	}
+
 
 	
 
@@ -189,6 +228,10 @@ class booking extends CI_Model
 		}
 		$date=date("Y-m-d");
 		$this->db->where('from_date >',$date);
+		
+		//accepted booking
+		$this->db->where('status',1);
+
 		$this->db->order_by("from_date", "desc");
 		$this->db->limit(10);
 
@@ -204,6 +247,16 @@ class booking extends CI_Model
 		$this->db->where('user_id', $user_id);
 		$this->db->or_where('tutor_id', $user_id); 
 
+		$query = $this->db->get('bookings');
+
+		return $query->result();
+	}
+
+
+
+	function getBookingDetails($ID=NULL)
+	{
+		$this->db->where('id', $ID);
 		$query = $this->db->get('bookings');
 
 		return $query->result();

@@ -53,72 +53,83 @@
     </head>
 
     <body class="full_width">
+		
 		<div id="maincontainer" class="clearfix">
 			<div id="contentwrapper">
                 <div class="main_content">
 					<div class="row search_page">
 					    <div class="col-sm-12 col-md-12">
 					        <h3 class="heading"><small>Booking with</small></h3>
-								<?php
-									if ( $result == false )
-									{
-										echo 'No Bookings Exists...';
-									}
-									else if ( $result == 11111 )
-									{
-										echo 'No Bookings Exists...';
-									}
-									else
-									{
-										$i=1;
-										
-										foreach($result as $row)
-										{
-											if( $this->tank_auth->isTutor($user_id) && $row->status == 1 ) //Tutor
-											{
-												$combinedDT = date('Y-m-d H:i:s',strtotime("$row->from_date $row->from_time"));												
+								<div id="dt_a_wrapper" class="dataTables_wrapper form-inline" role="grid"><div class="row"><div class="col-sm-6"><div class="dt_actions"></div><div id="dt_a_length" class="dataTables_length"></div></div><div class="col-sm-6"><div class="dataTables_filter" id="dt_a_filter"></div></div></div><table class="table table-striped table-bordered dTableR dataTable" id="dt_a" aria-describedby="dt_a_info">
+									<thead>
+		                                <tr role="row"><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Browser: activate to sort column ascending">Sunday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Monday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Tuesday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Wednesday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Thursday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Friday</th><th class="sorting" role="columnheader" tabindex="0" aria-controls="dt_a" rowspan="1" colspan="1" style="width: 14.28%;" aria-label="Engine version: activate to sort column ascending">Saturday</th></tr>
+		                            </thead>
+                        			
+	                        			<tbody role="alert" aria-live="polite" aria-relevant="all">
 
-												$interval =  date_create($combinedDT)->diff(date_create('now'));
+		                        			<?php
 
-												if($interval->days<29)
+		                        				$bookings = array();
+
+		                        				if ( $result == false )
 												{
-													$name=$this->tank_auth->get_fullname($row->user_id);
+													
+												}
+												else
+												{
 
-													$path=$this->tank_auth->getThumb($row->user_id);
-
-													$path=site_url('../uploads').'/'.$path;
-
-													if(!is_array(getimagesize($path)))
+													//initializing with empty string
+													foreach($result as $row)
 													{
-														$path="http://www.placehold.it/80x80/EFEFEF/AAAAAA";
+														$bookings[$row->from_date]='';
 													}
 
+													foreach($result as $row)
+													{
+														$html=anchor('/bookings/details/'.$row->id, $row->from_time.' '.$row->subject );
 
-													echo '<div class="search_item clearfix"> <span class="searchNb">'.$i.'</span> <div class="thumbnail pull-left" style="margin-right: 15px;"> <img alt="" src="'.$path.'"> </div><div class="search_content"> <h4> <a href="javascript:void(0)" class="sepV_a">'.$name.'</a> </h4><p class="sepH_b item_description">'.$row->from_date.' To '.$row->till_date.'</br>'.$row->from_time.' To '.$row->till_time.'</p> ';
-
-													$id = $row->id;
-													echo "<div 'style=' display:inline; ' '>";
-													
-													
-													echo form_open("bookings/delete","style ='float: left; padding: 5px;'");
-													echo ' <input type="hidden" id="id" name="booking_id" value="'.$id.'"> <input type="hidden" id="id" name="tutor_name" value="'.$name.'"> <input type="submit" value="Cancel Booking" class="btn btn-primary" />  ';
-													echo form_close();
-
-													echo '</div>';
-													echo '</div></div>';
-
-													$i++;
+														$bookings[$row->from_date]=$bookings[$row->from_date].'</br>'.$html;
+													}
 												}
-											}
-										}
-									}
-								?>
-					        </div>
 
-					    </div>
-					</div>           
-				</div>
-            </div>
+
+												$date = new DateTime("NOW");
+												
+												for($i=0;$i<5;$i++)
+		                        				{
+		                        					echo '<tr id="odd">';
+		                        					
+		                        					for($j=0;$j<7;$j++)
+		                        					{
+		                        						$date->modify('+1 day');
+														
+														$html='';
+														if(array_key_exists($date->format('Y-m-d'), $bookings))
+														{
+														    $html=$bookings[$date->format('Y-m-d')];
+														}
+
+			                        					echo'<td id="'.$date->format('d-m-Y').'"><small>'.$date->format('d/m').'</small>'.$html.'</td>';
+			                        				}
+
+			                        				echo '</tr>';
+		                        				}
+
+		                        				
+
+		                        			?>
+
+		                        			
+
+		                        		</tbody>
+		                        	</table>
+
+					    		</div>
+
+					</div>
+				</div>           
+			</div>
+        </div>
 
 
 
@@ -155,8 +166,7 @@
 		<script src="<?php echo site_url('../bootstrap/js/bootstrap.min.js'); ?>"></script>
 	    <!-- bootstrap plugins -->
 		<script src="<?php echo site_url('../js/bootstrap.plugins.min.js'); ?>"></script>
-		<!-- typeahead -->
-		<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
+		
 	    <!-- code prettifier -->
 		<script src="<?php echo site_url('../lib/google-code-prettify/prettify.min.js'); ?>"></script>
 	    <!-- sticky messages -->
@@ -189,7 +199,8 @@
 		<!-- search page functions -->
 	    <script src="<?php echo site_url('../js/gebo_search.js'); ?>"></script>
 
-    
+    	<!-- typeahead -->
+		<script src="<?php echo site_url('../lib/typeahead/typeahead.min.js'); ?>"></script>
 	
 
 

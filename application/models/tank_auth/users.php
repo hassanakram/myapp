@@ -62,6 +62,24 @@ class Users extends CI_Model
 		//return NULL;
 	}
 
+	function getUserDetails($user_id)
+	{
+	
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get($this->profile_table_name);
+		//if ($query->num_rows() > 0) 
+			return $query->first_row();
+		//return NULL;
+	}
+
+	function setUserSubjects($user_id,$subjects)
+	{
+		$this->db->set('subjects', $subjects);
+		$this->db->where('user_id', $user_id);
+		$this->db->update($this->profile_table_name);
+		return true;
+	}
+
 
 	function get_email($user_id)
 	{
@@ -550,34 +568,11 @@ class Users extends CI_Model
 			$this->db->order_by("rating", "asc");
 		}
 		
-		$other=$this->input->post('other');
-
-		if(empty($other))
+		$subjects=$this->input->post('subjects');
+		if(!empty($subjects))
 		{
-
-			$Biology=$this->input->post('Biology');
-			if(!empty($Biology))
-				$this->db->or_where('Bio','Biology');
-
-			$Science=$this->input->post('Science');
-			if(!empty($Science))
-				$this->db->where('Science','Science');
-
-			$English=$this->input->post('English');
-			if(!empty($English))
-				$this->db->where('Eng','English');
-
-			$Math=$this->input->post('Math');
-			if(!empty($Math))
-				$this->db->where('Math','Math');
-
-			$Physics=$this->input->post('Physics');
-			if(!empty($Physics))
-				$this->db->where('Phy','Physics');
-
-			$Chemistry=$this->input->post('Chemistry');
-			if(!empty($Chemistry))
-				$this->db->where('Chem','Chemistry');
+			error_log("subjects is set");
+			$this->db->like('subjects', $subjects); 
 		}
 
 		
